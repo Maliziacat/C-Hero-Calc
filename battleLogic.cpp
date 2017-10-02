@@ -51,7 +51,7 @@ void FightData::LoadHeroInfluences() {
 	elements = 0;
 
 	for (int i = lost; i < armySize; i++) {
-		Monster currentMonster = monsterReference[lineup[i]];
+		Monster currentMonster = monsterReference[lineup[lost]];
 
 		if (cumAoeDamageTaken >= currentMonster.hp) { // Check for Backline Deaths
 			lost += (lost == i);
