@@ -21,7 +21,11 @@ enum SkillType {
 	berserk,
 	friends,
 	champion,
-	adapt};
+	adapt,
+	addserk,
+	alltypes,
+	cut
+};
 
 enum Element {
 	earth   = 0,

@@ -124,6 +124,10 @@ static vector<Monster> baseHeroes { // Raw, unleveld Hero Data, holds actual Obj
 	Monster( 72, 48, 0, "brynhildr",         air,   {champion,all, 4}),
 	Monster( 78, 52, 0, "groth",             fire,  {champion,all, 5}),
 
+	Monster( 75, 45, 0, "spyke",             air,   {addserk, self, 5}),
+	Monster( 70, 55, 0, "aoyuki",            water, {alltypes,self, 50}),
+	Monster( 50,100, 0, "gaiabyte",          earth, {cut,     self, 0.5}),
+
 	Monster( 20, 10, 0, "valor",             air,   {protect, air, 1}),
 	Monster( 30,  8, 0, "rokka",             earth, {protect, earth, 1}),
 	Monster( 24, 12, 0, "pyromancer",        fire,  {protect, fire, 1}),
@@ -181,6 +185,10 @@ static map<string, int> rarities { // hero rarities
 	{"veildur", 2},
 	{"brynhildr", 2},
 	{"groth", 2},
+
+	{"spyke", 2},
+	{"aoyuki", 2},
+	{"gaiabyte", 2},
 
 	{"valor", 0},
 	{"rokka", 0},

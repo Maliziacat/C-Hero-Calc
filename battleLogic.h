@@ -51,6 +51,7 @@ public:
 	int paoeDamage;
 	int healingSkill;
 	int pureMonsters;
+	int elements; // this should be read as a 4-bit array
 
 	Monster *currentMonster;
 	SkillType skillType[6];

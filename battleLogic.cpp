@@ -48,18 +48,25 @@ void FightData::LoadHeroInfluences() {
 	paoeDamage = 0;
 	healingSkill = 0;
 	pureMonsters = 0;
+	elements = 0;
 
 	for (int i = lost; i < armySize; i++) {
-		if (cumAoeDamageTaken >= monsterReference[lineup[i]].hp) { // Check for Backline Deaths
+		Monster currentMonster = monsterReference[lineup[i]];
+
+		if (cumAoeDamageTaken >= currentMonster.hp) { // Check for Backline Deaths
 			lost += (lost == i);
 		} else {
+			// track elements of monsters before current monster
+			if (i != lost)
+				elements |= 1 << currentMonster.element;
+
 			if (skillType[i] == nothing) {
 				pureMonsters++; // count for friends ability
-			} else if (skillType[i] == protect && (skillTarget[i] == all || skillTarget[i] == monsterReference[lineup[lost]].element)) {
+			} else if (skillType[i] == protect && (skillTarget[i] == all || skillTarget[i] == currentMonster.element)) {
 				protection += skillAmount[i];
-			} else if (skillType[i] == buff && (skillTarget[i] == all || skillTarget[i] == monsterReference[lineup[lost]].element)) {
+			} else if (skillType[i] == buff && (skillTarget[i] == all || skillTarget[i] == currentMonster.element)) {
 				damageBuff += skillAmount[i];
-			} else if (skillType[i] == champion && (skillTarget[i] == all || skillTarget[i] == monsterReference[lineup[lost]].element)) {
+			} else if (skillType[i] == champion && (skillTarget[i] == all || skillTarget[i] == currentMonster.element)) {
 				damageBuff += skillAmount[i];
 				protection += skillAmount[i];
 			} else if (skillType[i] == heal) {
@@ -67,7 +74,7 @@ void FightData::LoadHeroInfluences() {
 			} else if (skillType[i] == aoe) {
 				aoeDamage += skillAmount[i];
 			} else if (skillType[i] == pAoe && i == lost) {
-				paoeDamage += monsterReference[lineup[i]].damage;
+				paoeDamage += currentMonster.damage;
 			}
 		}
 	}
@@ -116,6 +123,11 @@ void FightData::CalcDamage(Element enemyElement, int enemyProtection) {
 	} else if (skillType[lost] == berserk) {
 		damage *= pow(skillAmount[lost], berserkProcs);
 		berserkProcs++;
+	} else if (skillType[lost] == addserk) {
+		damage += skillAmount[lost] * berserkProcs;
+		berserkProcs++;
+	} else if (skillType[lost] == alltypes && elements == 15) { // 15 is 1111 in binary, so all four elements are included
+		damage += skillAmount[lost];
 	}
 
 	// Add Buff Damage
@@ -155,6 +167,10 @@ void FightData::ApplyDamage(int enemyDamageGiven, int enemyAoeDamageGiven)
 		lost++;
 		berserkProcs = 0;
 		frontDamageTaken = cumAoeDamageTaken;
+	} else if (skillType[lost] == cut) {
+		int remainingHealth = currentMonster->hp - frontDamageTaken;
+		remainingHealth = remainingHealth * skillAmount[lost] + 0.5; // round up
+		frontDamageTaken = currentMonster->hp - remainingHealth;
 	}
 }
 
