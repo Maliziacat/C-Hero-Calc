@@ -27,7 +27,7 @@ public:
 	void SetCurrentMonster();
 	Element GetCurrentElement();
 	int GetProtection();
-	void CalcDamage(Element enemyElement, int enemyProtection);
+	void CalcDamage(Element enemyElement, int enemyProtection, int turncounter);
 
 	int GetDamageGiven();
 	int GetAoeDamageGiven();

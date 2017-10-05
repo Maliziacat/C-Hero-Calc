@@ -109,7 +109,7 @@ int FightData::GetProtection() {
 	return protection;
 }
 
-void FightData::CalcDamage(Element enemyElement, int enemyProtection) {
+void FightData::CalcDamage(Element enemyElement, int enemyProtection, int turncounter) {
 	int elementalDifference;
 
 	// Get Base Damage for this Turn
@@ -123,10 +123,9 @@ void FightData::CalcDamage(Element enemyElement, int enemyProtection) {
 	} else if (skillType[lost] == berserk) {
 		damage *= pow(skillAmount[lost], berserkProcs);
 		berserkProcs++;
-	} else if (skillType[lost] == addserk) {
-		damage += skillAmount[lost] * berserkProcs;
-		berserkProcs++;
-	} else if (skillType[lost] == alltypes && elements == 15) { // 15 is 1111 in binary, so all four elements are included
+	} else if (skillType[lost] == training) {
+		damage += skillAmount[lost] * turncounter;
+	} else if (skillType[lost] == rainbow && elements == 15) { // 15 is 1111 in binary, so all four elements are included
 		damage += skillAmount[lost];
 	}
 
@@ -167,7 +166,7 @@ void FightData::ApplyDamage(int enemyDamageGiven, int enemyAoeDamageGiven)
 		lost++;
 		berserkProcs = 0;
 		frontDamageTaken = cumAoeDamageTaken;
-	} else if (skillType[lost] == cut) {
+	} else if (skillType[lost] == wither) {
 		int remainingHealth = currentMonster->hp - frontDamageTaken;
 		remainingHealth = remainingHealth * skillAmount[lost] + 0.5; // round up
 		frontDamageTaken = currentMonster->hp - remainingHealth;
@@ -191,6 +190,7 @@ void simulateFight(Army & left, Army & right, bool verbose) {
 
 	FightData leftData(left);
 	FightData rightData(right);
+	int turncounter = 0;
 
 	// If no heroes are in the army the result from the smaller army is still valid
 	if (left.lastFightData.valid && !verbose) { 
@@ -202,6 +202,7 @@ void simulateFight(Army & left, Army & right, bool verbose) {
 		rightData.frontDamageTaken   = left.lastFightData.damage;
 		rightData.cumAoeDamageTaken  = left.lastFightData.rightAoeDamage;
 		rightData.berserkProcs       = left.lastFightData.berserk;
+		turncounter                  = left.lastFightData.turncounter;
 	}
 
 	leftData.LoadSkills();
@@ -222,11 +223,13 @@ void simulateFight(Army & left, Army & right, bool verbose) {
 
 		leftData.SetCurrentMonster();
 		rightData.SetCurrentMonster();
-		leftData.CalcDamage(rightData.GetCurrentElement(), rightData.GetProtection());
-		rightData.CalcDamage(leftData.GetCurrentElement(), leftData.GetProtection());
+		leftData.CalcDamage(rightData.GetCurrentElement(), rightData.GetProtection(), turncounter);
+		rightData.CalcDamage(leftData.GetCurrentElement(), leftData.GetProtection(), turncounter);
 
 		leftData.ApplyDamage(rightData.GetDamageGiven(), rightData.GetAoeDamageGiven());
 		rightData.ApplyDamage(leftData.GetDamageGiven(), leftData.GetAoeDamageGiven());
+
+		++turncounter;
 
 		// Output detailed fight Data for debugging
 		if (verbose) {
@@ -236,6 +239,7 @@ void simulateFight(Army & left, Army & right, bool verbose) {
 
 	// write all the results into a FightResult
 	left.lastFightData.dominated = false;
+	left.lastFightData.turncounter = turncounter;
 	left.lastFightData.leftAoeDamage = leftData.cumAoeDamageTaken;
 	left.lastFightData.rightAoeDamage = rightData.cumAoeDamageTaken;
 
