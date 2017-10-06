@@ -50,23 +50,24 @@ void FightData::LoadHeroInfluences() {
 	pureMonsters = 0;
 	elements = 0;
 
-	for (int i = lost; i < armySize; i++) {
-		Monster currentMonster = monsterReference[lineup[lost]];
+	Monster *currentMonster = &monsterReference[lineup[lost]];
 
-		if (cumAoeDamageTaken >= currentMonster.hp) { // Check for Backline Deaths
+	for (int i = lost; i < armySize; i++) {
+		if (cumAoeDamageTaken >= currentMonster->hp) { // Check for Backline Deaths
 			lost += (lost == i);
+			currentMonster = &monsterReference[lineup[lost]];
 		} else {
 			// track elements of monsters before current monster
 			if (i != lost)
-				elements |= 1 << currentMonster.element;
+				elements |= 1 << currentMonster->element;
 
 			if (skillType[i] == nothing) {
 				pureMonsters++; // count for friends ability
-			} else if (skillType[i] == protect && (skillTarget[i] == all || skillTarget[i] == currentMonster.element)) {
+			} else if (skillType[i] == protect && (skillTarget[i] == all || skillTarget[i] == currentMonster->element)) {
 				protection += skillAmount[i];
-			} else if (skillType[i] == buff && (skillTarget[i] == all || skillTarget[i] == currentMonster.element)) {
+			} else if (skillType[i] == buff && (skillTarget[i] == all || skillTarget[i] == currentMonster->element)) {
 				damageBuff += skillAmount[i];
-			} else if (skillType[i] == champion && (skillTarget[i] == all || skillTarget[i] == currentMonster.element)) {
+			} else if (skillType[i] == champion && (skillTarget[i] == all || skillTarget[i] == currentMonster->element)) {
 				damageBuff += skillAmount[i];
 				protection += skillAmount[i];
 			} else if (skillType[i] == heal) {
@@ -74,7 +75,7 @@ void FightData::LoadHeroInfluences() {
 			} else if (skillType[i] == aoe) {
 				aoeDamage += skillAmount[i];
 			} else if (skillType[i] == pAoe && i == lost) {
-				paoeDamage += currentMonster.damage;
+				paoeDamage += currentMonster->damage;
 			}
 		}
 	}
