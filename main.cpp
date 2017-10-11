@@ -177,6 +177,9 @@ void getQuickSolutions(Army target, size_t limit) {
 void seedMoreArmies() {
 	vector<Army> newArmies {};
 
+	if (best.monsterAmount <= firstDominance)
+		return;
+
 	for (int slot = 0; slot < best.monsterAmount; slot++) {
 		for (int i = 0; i < monsterList.size(); i++) {
 			if (monsterReference[monsterList[i]].cost <= followerUpperBound) {
@@ -405,6 +408,10 @@ int solveInstance(bool debugInfo) {
 		}
 		debugOutput(tempTime, "", true, true, true);
 	}
+
+	// Run off-by-one check
+	seedMoreArmies();
+
 	return time(NULL) - startTime;
 }
 
@@ -502,12 +509,6 @@ int main(int argc, char** argv) {
 
 			} else {
 				// Print the winning combination!
-				cout << endl << "The seed combination is:" << endl << "  ";
-				best.print();
-
-				cout << "Morphing..." << endl;
-				seedMoreArmies();
-
 				cout << endl << "The winning combination is:" << endl << "  ";
 				best.print();
 				cout << "  (Right-most fights first)" << endl;
