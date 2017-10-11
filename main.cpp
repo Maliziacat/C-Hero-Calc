@@ -174,6 +174,41 @@ void getQuickSolutions(Army target, size_t limit) {
 	}
 }
 
+void seedMoreArmies() {
+	vector<Army> newArmies {};
+
+	for (int slot = 0; slot < best.monsterAmount; slot++) {
+		for (int i = 0; i < monsterList.size(); i++) {
+			if (monsterReference[monsterList[i]].cost <= followerUpperBound) {
+				Army tempArmy = best;
+				tempArmy.replace(slot, monsterList[i]);
+				newArmies.push_back(tempArmy);
+			}
+		}
+
+		for (int i = 0; i < availableHeroes.size(); i++) {
+			bool fHeroUsed = false;
+			int8_t hero = availableHeroes[i];
+
+			for (int j = 0; j < best.monsterAmount; j++) {
+				if (best.monsters[j] == hero) {
+					fHeroUsed = true;
+					break;
+				}
+			}
+
+			if (!fHeroUsed) {
+				Army tempArmy = best;
+				tempArmy.replace(slot, hero);
+				newArmies.push_back(tempArmy);
+			}
+		}
+	}
+
+	cout << "  Simulating " << newArmies.size() << " more fights" << endl;
+	simulateMultipleFights(newArmies);
+}
+
 int solveInstance(bool debugInfo) {
 	Army tempArmy = Army();
 	int startTime;
@@ -467,7 +502,13 @@ int main(int argc, char** argv) {
 
 			} else {
 				// Print the winning combination!
-				cout << endl << "The optimal combination is:" << endl << "  ";
+				cout << endl << "The seed combination is:" << endl << "  ";
+				best.print();
+
+				cout << "Morphing..." << endl;
+				seedMoreArmies();
+
+				cout << endl << "The winning combination is:" << endl << "  ";
 				best.print();
 				cout << "  (Right-most fights first)" << endl;
 			}
