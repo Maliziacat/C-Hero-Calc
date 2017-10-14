@@ -181,6 +181,7 @@ void getQuickSolutions(Army target, size_t limit) {
 
 void seedMoreArmies() {
 	vector<Army> newArmies {};
+	best.lastFightData.valid = false;
 
 	if (best.monsterAmount <= firstDominance)
 		return;
