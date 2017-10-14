@@ -28,6 +28,8 @@ int followerUpperBound;
 bool customFollowers;
 Army best;
 
+void seedMoreArmies();
+
 // Simulates fights with all armies against the target. armies will contain armies with the results written in.
 void simulateMultipleFights(vector<Army> & armies) {
 	bool newFound = false;
@@ -42,7 +44,7 @@ void simulateMultipleFights(vector<Army> & armies) {
 				newFound = true;
 				followerUpperBound = armies[i].followerCost;
 				best = armies[i];
-				debugOutput(time(NULL), "    " + best.toString(), true, false, true);
+				debugOutput(time(NULL), "  " + best.toString(), true, false, true);
 			}
 		}
 	}
@@ -165,6 +167,9 @@ void getQuickSolutions(Army target, size_t limit) {
 			best = tempArmy;
 			if (followerUpperBound > tempArmy.followerCost) {
 				followerUpperBound = tempArmy.followerCost;
+
+			seedMoreArmies();
+			cout << endl;
 			}
 		} else {
 			cout << "  Could not find valid solution while being greedy" << endl;
@@ -208,7 +213,7 @@ void seedMoreArmies() {
 		}
 	}
 
-	cout << "  Simulating " << newArmies.size() << " more fights" << endl;
+	cout << "Simulating " << newArmies.size() << " more fights...";
 	simulateMultipleFights(newArmies);
 }
 
