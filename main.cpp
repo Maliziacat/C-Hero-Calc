@@ -257,12 +257,7 @@ void checkMonsterDominance(
 	size_t pureMonsterArmiesSize,
 	size_t heroMonsterArmiesSize,
 	size_t armySize,
-	bool optimizable,
-	bool debugInfo,
-	int &tempTime) {
-
-	debugOutput(tempTime, "  Calculating Dominance for non-heroes... ", debugInfo, true, false);
-	tempTime = time(NULL);
+	bool optimizable) {
 
 	int leftFollowerCost;
 	FightResult * currentFightResult;
@@ -300,11 +295,77 @@ void checkMonsterDominance(
 	}
 }
 
+void checkHeroDominance(
+	vector<Army> & heroMonsterArmies,
+	size_t heroMonsterArmiesSize,
+	size_t armySize,
+	bool optimizable) {
+
+	int leftFollowerCost;
+	FightResult * currentFightResult;
+	size_t leftHeroListSize;
+	int8_t rightMonster;
+	int8_t leftMonster;
+	int8_t leftHeroList[6];
+
+	bool usedHeroSubset, leftUsedHero;
+	for (size_t i = 0; i < heroMonsterArmiesSize; i++) {
+		leftFollowerCost = heroMonsterArmies[i].followerCost;
+		currentFightResult = &heroMonsterArmies[i].lastFightData;
+		leftHeroListSize = 0;
+		for (size_t si = 0; si < armySize; si++) {
+			leftMonster = heroMonsterArmies[i].monsters[si];
+			if (monsterReference[leftMonster].isHero) {
+				leftHeroList[leftHeroListSize] = leftMonster;
+				leftHeroListSize++;
+			}
+		}
+
+		// A result is obsolete if only one expansion is left but no single mob can beat the last two enemy mobs alone (optimizable)
+		if (armySize == (maxMonstersAllowed - 1) && optimizable && currentFightResult->rightAoeDamage == 0) {
+			// TODO: Investigate whether this is truly correct: What if the second-to-last mob is already damaged (not from aoe) i.e. it defeated the last mob of left?
+			if (currentFightResult->rightWon && currentFightResult->monstersLost < (int) (targetArmySize - 2)){
+				currentFightResult->dominated = true;
+			}
+		}
+
+		// A result is dominated If:
+		if (!currentFightResult->dominated) {
+			// if i costs more followers and got less far than j, then i is dominated
+			for (size_t j = i+1; j < heroMonsterArmiesSize; j++) {
+				if (leftFollowerCost < heroMonsterArmies[j].followerCost) {
+					break;
+				} else if (*currentFightResult <= heroMonsterArmies[j].lastFightData) { // i has more followers implicitly
+					usedHeroSubset = true; // If j doesn't use a strict subset of the heroes i used, it cannot dominate i
+					for (size_t sj = 0; sj < armySize; sj++) { // for every hero in j there must be the same hero in i
+						leftUsedHero = false; 
+						rightMonster = heroMonsterArmies[j].monsters[sj];
+						if (monsterReference[rightMonster].isHero) { // mob is a hero
+							for (size_t si = 0; si < leftHeroListSize; si++) {
+								if (leftHeroList[si] == rightMonster) {
+									leftUsedHero = true;
+									break;
+								}
+							}
+							if (!leftUsedHero) {
+								usedHeroSubset = false;
+								break;
+							}
+						}
+					}
+					if (usedHeroSubset) {
+						currentFightResult->dominated = true;
+						break;
+					}
+				}
+			}
+		}
+	}
+}
+
 int solveInstance(bool debugInfo) {
 	int startTime;
 	int tempTime;
-
-	size_t i, j, sj, si;
 
 	// Get first Upper limit on followers
 	if (maxMonstersAllowed > 4) {
@@ -315,12 +376,12 @@ int solveInstance(bool debugInfo) {
 
 	vector<Army> pureMonsterArmies {}; // initialize with all monsters
 	vector<Army> heroMonsterArmies {}; // initialize with all heroes
-	for (i = 0; i < monsterList.size(); i++) {
+	for (size_t i = 0; i < monsterList.size(); i++) {
 		if (monsterReference[monsterList[i]].cost <= followerUpperBound) {
 			pureMonsterArmies.push_back(Army( {monsterList[i]} ));
 		}
 	}
-	for (i = 0; i < availableHeroes.size(); i++) { // Ignore checking for Hero Cost
+	for (size_t i = 0; i < availableHeroes.size(); i++) { // Ignore checking for Hero Cost
 		heroMonsterArmies.push_back(Army( {availableHeroes[i]} ));
 	}
 
@@ -356,13 +417,8 @@ int solveInstance(bool debugInfo) {
 
 			if (firstDominance <= armySize) {
 				// Calculate which results are strictly better than others (dominance)
-
-				int leftFollowerCost;
-				FightResult * currentFightResult;
-				int8_t leftHeroList[6];
-				size_t leftHeroListSize;
-				int8_t rightMonster;
-				int8_t leftMonster;
+				debugOutput(tempTime, "  Calculating Dominance for non-heroes... ", debugInfo, true, false);
+				tempTime = time(NULL);
 
 				// First Check dominance for non-Hero setups
 				checkMonsterDominance(
@@ -371,66 +427,17 @@ int solveInstance(bool debugInfo) {
 					pureMonsterArmiesSize,
 					heroMonsterArmiesSize,
 					armySize,
-					optimizable,
-					debugInfo,
-					tempTime);
+					optimizable);
 
 				debugOutput(tempTime, "  Calculating Dominance for heroes... ", debugInfo, true, false);
 				tempTime = time(NULL);
+
 				// Domination for setups with heroes
-				bool usedHeroSubset, leftUsedHero;
-				for (i = 0; i < heroMonsterArmiesSize; i++) {
-					leftFollowerCost = heroMonsterArmies[i].followerCost;
-					currentFightResult = &heroMonsterArmies[i].lastFightData;
-					leftHeroListSize = 0;
-					for (si = 0; si < armySize; si++) {
-						leftMonster = heroMonsterArmies[i].monsters[si];
-						if (monsterReference[leftMonster].isHero) {
-							leftHeroList[leftHeroListSize] = leftMonster;
-							leftHeroListSize++;
-						}
-					}
-
-					// A result is obsolete if only one expansion is left but no single mob can beat the last two enemy mobs alone (optimizable)
-					if (armySize == (maxMonstersAllowed - 1) && optimizable && currentFightResult->rightAoeDamage == 0) {
-						// TODO: Investigate whether this is truly correct: What if the second-to-last mob is already damaged (not from aoe) i.e. it defeated the last mob of left?
-						if (currentFightResult->rightWon && currentFightResult->monstersLost < (int) (targetArmySize - 2)){
-							currentFightResult->dominated = true;
-						}
-					}
-
-					// A result is dominated If:
-					if (!currentFightResult->dominated) {
-						// if i costs more followers and got less far than j, then i is dominated
-						for (j = i+1; j < heroMonsterArmiesSize; j++) {
-							if (leftFollowerCost < heroMonsterArmies[j].followerCost) {
-								break;
-							} else if (*currentFightResult <= heroMonsterArmies[j].lastFightData) { // i has more followers implicitly
-								usedHeroSubset = true; // If j doesn't use a strict subset of the heroes i used, it cannot dominate i
-								for (sj = 0; sj < armySize; sj++) { // for every hero in j there must be the same hero in i
-									leftUsedHero = false; 
-									rightMonster = heroMonsterArmies[j].monsters[sj];
-									if (monsterReference[rightMonster].isHero) { // mob is a hero
-										for (si = 0; si < leftHeroListSize; si++) {
-											if (leftHeroList[si] == rightMonster) {
-												leftUsedHero = true;
-												break;
-											}
-										}
-										if (!leftUsedHero) {
-											usedHeroSubset = false;
-											break;
-										}
-									}
-								}
-								if (usedHeroSubset) {
-									currentFightResult->dominated = true;
-									break;
-								}
-							}
-						}
-					}
-				}
+				checkHeroDominance(
+					heroMonsterArmies,
+					heroMonsterArmiesSize,
+					armySize,
+					optimizable);
 			}
 			// now we expand to add the next monster to all non-dominated armies
 			debugOutput(tempTime, "  Expanding Lineups by one... ", debugInfo, true, false);
