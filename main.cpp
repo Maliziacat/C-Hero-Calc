@@ -251,6 +251,55 @@ bool isOptimizable(vector<Army> & pureMonsterArmies, vector<Army> & heroMonsterA
 	return optimizable;
 }
 
+void checkMonsterDominance(
+	vector<Army> & pureMonsterArmies,
+	vector<Army> & heroMonsterArmies,
+	size_t pureMonsterArmiesSize,
+	size_t heroMonsterArmiesSize,
+	size_t armySize,
+	bool optimizable,
+	bool debugInfo,
+	int &tempTime) {
+
+	debugOutput(tempTime, "  Calculating Dominance for non-heroes... ", debugInfo, true, false);
+	tempTime = time(NULL);
+
+	int leftFollowerCost;
+	FightResult * currentFightResult;
+
+	for (size_t i = 0; i < pureMonsterArmiesSize; i++) {
+		leftFollowerCost = pureMonsterArmies[i].followerCost;
+		currentFightResult = &pureMonsterArmies[i].lastFightData;
+		// A result is obsolete if only one expansion is left but no single mob can beat the last two enemy mobs alone (optimizable)
+		if (armySize == (maxMonstersAllowed - 1) && optimizable) {
+			// TODO: Investigate whether this is truly correct: What if the second-to-last mob is already damaged (not from aoe) i.e. it defeated the last mob of left?
+			if (currentFightResult->rightWon && currentFightResult->monstersLost < (int) (targetArmySize - 2) && currentFightResult->rightAoeDamage == 0) {
+				currentFightResult->dominated = true;
+			}
+		}
+		// A result is dominated If:
+		if (!currentFightResult->dominated) { 
+			// Another pureResults got farther with a less costly lineup
+			for (size_t j = i+1; j < pureMonsterArmiesSize; j++) {
+				if (leftFollowerCost < pureMonsterArmies[j].followerCost) {
+					break; 
+				} else if (*currentFightResult <= pureMonsterArmies[j].lastFightData) { // pureResults[i] has more followers implicitly 
+					currentFightResult->dominated = true;
+					break;
+				}
+			}
+			// A lineup without heroes is better than a setup with heroes even if it got just as far
+			for (size_t j = 0; j < heroMonsterArmiesSize; j++) {
+				if (leftFollowerCost > heroMonsterArmies[j].followerCost) {
+					break; 
+				} else if (*currentFightResult >= heroMonsterArmies[j].lastFightData) { // pureResults[i] has less followers implicitly
+					heroMonsterArmies[j].lastFightData.dominated = true;
+				}
+			}
+		}
+	}
+}
+
 int solveInstance(bool debugInfo) {
 	int startTime;
 	int tempTime;
@@ -307,8 +356,6 @@ int solveInstance(bool debugInfo) {
 
 			if (firstDominance <= armySize) {
 				// Calculate which results are strictly better than others (dominance)
-				debugOutput(tempTime, "  Calculating Dominance for non-heroes... ", debugInfo, true, false);
-				tempTime = time(NULL);
 
 				int leftFollowerCost;
 				FightResult * currentFightResult;
@@ -316,38 +363,17 @@ int solveInstance(bool debugInfo) {
 				size_t leftHeroListSize;
 				int8_t rightMonster;
 				int8_t leftMonster;
+
 				// First Check dominance for non-Hero setups
-				for (i = 0; i < pureMonsterArmiesSize; i++) {
-					leftFollowerCost = pureMonsterArmies[i].followerCost;
-					currentFightResult = &pureMonsterArmies[i].lastFightData;
-					// A result is obsolete if only one expansion is left but no single mob can beat the last two enemy mobs alone (optimizable)
-					if (armySize == (maxMonstersAllowed - 1) && optimizable) {
-						// TODO: Investigate whether this is truly correct: What if the second-to-last mob is already damaged (not from aoe) i.e. it defeated the last mob of left?
-						if (currentFightResult->rightWon && currentFightResult->monstersLost < (int) (targetArmySize - 2) && currentFightResult->rightAoeDamage == 0) {
-							currentFightResult->dominated = true;
-						}
-					}
-					// A result is dominated If:
-					if (!currentFightResult->dominated) { 
-						// Another pureResults got farther with a less costly lineup
-						for (j = i+1; j < pureMonsterArmiesSize; j++) {
-							if (leftFollowerCost < pureMonsterArmies[j].followerCost) {
-								break; 
-							} else if (*currentFightResult <= pureMonsterArmies[j].lastFightData) { // pureResults[i] has more followers implicitly 
-								currentFightResult->dominated = true;
-								break;
-							}
-						}
-						// A lineup without heroes is better than a setup with heroes even if it got just as far
-						for (j = 0; j < heroMonsterArmiesSize; j++) {
-							if (leftFollowerCost > heroMonsterArmies[j].followerCost) {
-								break; 
-							} else if (*currentFightResult >= heroMonsterArmies[j].lastFightData) { // pureResults[i] has less followers implicitly
-								heroMonsterArmies[j].lastFightData.dominated = true;
-							}
-						}
-					}
-				}
+				checkMonsterDominance(
+					pureMonsterArmies,
+					heroMonsterArmies,
+					pureMonsterArmiesSize,
+					heroMonsterArmiesSize,
+					armySize,
+					optimizable,
+					debugInfo,
+					tempTime);
 
 				debugOutput(tempTime, "  Calculating Dominance for heroes... ", debugInfo, true, false);
 				tempTime = time(NULL);
