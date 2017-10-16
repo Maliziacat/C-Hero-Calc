@@ -218,30 +218,9 @@ void seedMoreArmies() {
 	simulateMultipleFights(newArmies);
 }
 
-int solveInstance(bool debugInfo) {
+bool isOptimizable(vector<Army> & pureMonsterArmies, vector<Army> & heroMonsterArmies) {
 	Army tempArmy = Army();
-	int startTime;
-	int tempTime;
-
-	size_t i, j, sj, si;
-
-	// Get first Upper limit on followers
-	if (maxMonstersAllowed > 4) {
-		getQuickSolutions(targetArmy, maxMonstersAllowed);
-		if (!askYesNoQuestion("Continue calculation?", "  Continuing will most likely result in a cheaper solution but could consume a lot of RAM.\n")) {return 0;}
-		cout << endl;
-	}
-
-	vector<Army> pureMonsterArmies {}; // initialize with all monsters
-	vector<Army> heroMonsterArmies {}; // initialize with all heroes
-	for (i = 0; i < monsterList.size(); i++) {
-		if (monsterReference[monsterList[i]].cost <= followerUpperBound) {
-			pureMonsterArmies.push_back(Army( {monsterList[i]} ));
-		}
-	}
-	for (i = 0; i < availableHeroes.size(); i++) { // Ignore chacking for Hero Cost
-		heroMonsterArmies.push_back(Army( {availableHeroes[i]} ));
-	}
+	size_t i;
 
 	// Check if a single monster can beat the last two monsters of the target. If not, solutions that can only beat n-2 monsters need not be expanded later
 	bool optimizable = (targetArmySize >= 3);
@@ -268,6 +247,35 @@ int solveInstance(bool debugInfo) {
 			}
 		}
 	}
+
+	return optimizable;
+}
+
+int solveInstance(bool debugInfo) {
+	int startTime;
+	int tempTime;
+
+	size_t i, j, sj, si;
+
+	// Get first Upper limit on followers
+	if (maxMonstersAllowed > 4) {
+		getQuickSolutions(targetArmy, maxMonstersAllowed);
+		if (!askYesNoQuestion("Continue calculation?", "  Continuing will most likely result in a cheaper solution but could consume a lot of RAM.\n")) {return 0;}
+		cout << endl;
+	}
+
+	vector<Army> pureMonsterArmies {}; // initialize with all monsters
+	vector<Army> heroMonsterArmies {}; // initialize with all heroes
+	for (i = 0; i < monsterList.size(); i++) {
+		if (monsterReference[monsterList[i]].cost <= followerUpperBound) {
+			pureMonsterArmies.push_back(Army( {monsterList[i]} ));
+		}
+	}
+	for (i = 0; i < availableHeroes.size(); i++) { // Ignore checking for Hero Cost
+		heroMonsterArmies.push_back(Army( {availableHeroes[i]} ));
+	}
+
+	bool optimizable = isOptimizable(pureMonsterArmies, heroMonsterArmies);
 
 	// Run the Bruteforce Loop
 	startTime = time(NULL);
