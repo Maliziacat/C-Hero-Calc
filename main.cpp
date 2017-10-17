@@ -302,6 +302,25 @@ void checkMonsterDominance(
 	}
 }
 
+uint64_t calcHeroLineup(Army &army, size_t armySize) {
+	int8_t heroId;
+
+	// HEY YOU!  This will fail once a user can input more than 64 heroes.
+	uint64_t heroLineup = 0;
+
+	for (size_t i = 0; i < armySize; i++) {
+		heroId = army.monsters[i] - baseMonsterSize;
+
+		// instead of checking monsterReference to see if the id is a hero,
+		// we know monsterReference's first baseMonsterSize entries are monsters
+		if (heroId >= 0) {
+			heroLineup |= (uint64_t) 1 << heroId;
+		}
+	}
+
+	return heroLineup;
+}
+
 void checkHeroDominance(
 	vector<Army> & heroMonsterArmies,
 	size_t heroMonsterArmiesSize,
@@ -310,14 +329,10 @@ void checkHeroDominance(
 
 	int leftFollowerCost;
 	FightResult * currentFightResult;
-	size_t leftHeroListSize;
-	int8_t leftMonster;
-	int8_t leftHeroList[6];
 
 	for (size_t i = 0; i < heroMonsterArmiesSize; i++) {
 		leftFollowerCost = heroMonsterArmies[i].followerCost;
 		currentFightResult = &heroMonsterArmies[i].lastFightData;
-		leftHeroListSize = 0;
 
 		// A result is obsolete if only one expansion is left but no single mob can beat the last two enemy mobs alone (optimizable)
 		if (armySize == (maxMonstersAllowed - 1) && optimizable && currentFightResult->rightAoeDamage == 0) {
@@ -329,42 +344,17 @@ void checkHeroDominance(
 
 		// A result is dominated If:
 		if (!currentFightResult->dominated) {
-			for (size_t si = 0; si < armySize; si++) {
-				leftMonster = heroMonsterArmies[i].monsters[si];
-				if (monsterReference[leftMonster].isHero) {
-					leftHeroList[leftHeroListSize] = leftMonster;
-					leftHeroListSize++;
-				}
-			}
+			uint64_t leftHeroLineup = calcHeroLineup(heroMonsterArmies[i], armySize);
 
 			// if i costs more followers and got less far than j, then i is dominated
 			for (size_t j = i+1; j < heroMonsterArmiesSize; j++) {
 				if (leftFollowerCost < heroMonsterArmies[j].followerCost) {
 					break;
 				} else if (*currentFightResult <= heroMonsterArmies[j].lastFightData) { // i has more followers implicitly
-
 					// If j doesn't use a strict subset of the heroes i used, it cannot dominate i
-					bool leftUsedHero;
-					bool usedHeroSubset = true;
-					int8_t rightMonster;
+					uint64_t rightHeroLineup = calcHeroLineup(heroMonsterArmies[j], armySize);
 
-					for (size_t sj = 0; sj < armySize; sj++) { // for every hero in j there must be the same hero in i
-						leftUsedHero = false; 
-						rightMonster = heroMonsterArmies[j].monsters[sj];
-						if (monsterReference[rightMonster].isHero) { // mob is a hero
-							for (size_t si = 0; si < leftHeroListSize; si++) {
-								if (leftHeroList[si] == rightMonster) {
-									leftUsedHero = true;
-									break;
-								}
-							}
-							if (!leftUsedHero) {
-								usedHeroSubset = false;
-							}
-						}
-					}
-
-					if (usedHeroSubset) {
+					if ((rightHeroLineup & leftHeroLineup) == rightHeroLineup) {
 						currentFightResult->dominated = true;
 						break;
 					}
