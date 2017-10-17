@@ -50,6 +50,9 @@ void FightData::LoadHeroInfluences() {
 	pureMonsters = 0;
 	elements = 0;
 
+	if (HasLost())
+		return;
+
 	Monster *currentMonster = &monsterReference[lineup[lost]];
 
 	for (int i = lost; i < armySize; i++) {
