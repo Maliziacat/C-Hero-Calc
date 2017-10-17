@@ -313,13 +313,6 @@ void checkHeroDominance(
 		leftFollowerCost = heroMonsterArmies[i].followerCost;
 		currentFightResult = &heroMonsterArmies[i].lastFightData;
 		leftHeroListSize = 0;
-		for (size_t si = 0; si < armySize; si++) {
-			leftMonster = heroMonsterArmies[i].monsters[si];
-			if (monsterReference[leftMonster].isHero) {
-				leftHeroList[leftHeroListSize] = leftMonster;
-				leftHeroListSize++;
-			}
-		}
 
 		// A result is obsolete if only one expansion is left but no single mob can beat the last two enemy mobs alone (optimizable)
 		if (armySize == (maxMonstersAllowed - 1) && optimizable && currentFightResult->rightAoeDamage == 0) {
@@ -331,6 +324,14 @@ void checkHeroDominance(
 
 		// A result is dominated If:
 		if (!currentFightResult->dominated) {
+			for (size_t si = 0; si < armySize; si++) {
+				leftMonster = heroMonsterArmies[i].monsters[si];
+				if (monsterReference[leftMonster].isHero) {
+					leftHeroList[leftHeroListSize] = leftMonster;
+					leftHeroListSize++;
+				}
+			}
+
 			// if i costs more followers and got less far than j, then i is dominated
 			for (size_t j = i+1; j < heroMonsterArmiesSize; j++) {
 				if (leftFollowerCost < heroMonsterArmies[j].followerCost) {
