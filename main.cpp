@@ -251,6 +251,18 @@ bool isOptimizable(vector<Army> & pureMonsterArmies, vector<Army> & heroMonsterA
 	return optimizable;
 }
 
+bool isOptimizedFightDominated(size_t armySize, bool optimizable, FightResult * currentFightResult) {
+	// A result is obsolete if only one expansion is left but no single mob can beat the last two enemy mobs alone (optimizable)
+	if (armySize == (maxMonstersAllowed - 1) && optimizable) {
+		// TODO: Investigate whether this is truly correct: What if the second-to-last mob is already damaged (not from aoe) i.e. it defeated the last mob of left?
+		if (currentFightResult->rightWon && currentFightResult->monstersLost < (int) (targetArmySize - 2) && currentFightResult->rightAoeDamage == 0) {
+			currentFightResult->dominated = true;
+		}
+	}
+
+	return currentFightResult->dominated;
+}
+
 void checkMonsterDominance(
 	vector<Army> & pureMonsterArmies,
 	vector<Army> & heroMonsterArmies,
@@ -265,31 +277,26 @@ void checkMonsterDominance(
 	for (size_t i = 0; i < pureMonsterArmiesSize; i++) {
 		leftFollowerCost = pureMonsterArmies[i].followerCost;
 		currentFightResult = &pureMonsterArmies[i].lastFightData;
-		// A result is obsolete if only one expansion is left but no single mob can beat the last two enemy mobs alone (optimizable)
-		if (armySize == (maxMonstersAllowed - 1) && optimizable) {
-			// TODO: Investigate whether this is truly correct: What if the second-to-last mob is already damaged (not from aoe) i.e. it defeated the last mob of left?
-			if (currentFightResult->rightWon && currentFightResult->monstersLost < (int) (targetArmySize - 2) && currentFightResult->rightAoeDamage == 0) {
+
+		if (isOptimizedFightDominated(armySize, optimizable, currentFightResult))
+			continue;
+
+		// A result is dominated If:
+		// Another pureResults got farther with a less costly lineup
+		for (size_t j = i+1; j < pureMonsterArmiesSize; j++) {
+			if (leftFollowerCost < pureMonsterArmies[j].followerCost) {
+				break; 
+			} else if (*currentFightResult <= pureMonsterArmies[j].lastFightData) { // pureResults[i] has more followers implicitly 
 				currentFightResult->dominated = true;
+				break;
 			}
 		}
-		// A result is dominated If:
-		if (!currentFightResult->dominated) { 
-			// Another pureResults got farther with a less costly lineup
-			for (size_t j = i+1; j < pureMonsterArmiesSize; j++) {
-				if (leftFollowerCost < pureMonsterArmies[j].followerCost) {
-					break; 
-				} else if (*currentFightResult <= pureMonsterArmies[j].lastFightData) { // pureResults[i] has more followers implicitly 
-					currentFightResult->dominated = true;
-					break;
-				}
-			}
-			// A lineup without heroes is better than a setup with heroes even if it got just as far
-			for (size_t j = 0; j < heroMonsterArmiesSize; j++) {
-				if (leftFollowerCost > heroMonsterArmies[j].followerCost) {
-					break; 
-				} else if (*currentFightResult >= heroMonsterArmies[j].lastFightData) { // pureResults[i] has less followers implicitly
-					heroMonsterArmies[j].lastFightData.dominated = true;
-				}
+		// A lineup without heroes is better than a setup with heroes even if it got just as far
+		for (size_t j = 0; j < heroMonsterArmiesSize; j++) {
+			if (leftFollowerCost > heroMonsterArmies[j].followerCost) {
+				break; 
+			} else if (*currentFightResult >= heroMonsterArmies[j].lastFightData) { // pureResults[i] has less followers implicitly
+				heroMonsterArmies[j].lastFightData.dominated = true;
 			}
 		}
 	}
