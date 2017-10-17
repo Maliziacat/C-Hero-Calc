@@ -295,6 +295,49 @@ void checkMonsterDominance(
 	}
 }
 
+void checkCurrentFightDominance (
+	vector<Army> & heroMonsterArmies,
+	size_t heroMonsterArmiesSize,
+	int8_t * leftHeroList,
+	size_t leftHeroListSize,
+	int leftFollowerCost,
+	FightResult * currentFightResult,
+	size_t armySize,
+	size_t i) {
+
+	bool usedHeroSubset, leftUsedHero;
+	int8_t rightMonster;
+
+	// if i costs more followers and got less far than j, then i is dominated
+	for (size_t j = i+1; j < heroMonsterArmiesSize; j++) {
+		if (leftFollowerCost < heroMonsterArmies[j].followerCost) {
+			break;
+		} else if (*currentFightResult <= heroMonsterArmies[j].lastFightData) { // i has more followers implicitly
+			usedHeroSubset = true; // If j doesn't use a strict subset of the heroes i used, it cannot dominate i
+			for (size_t sj = 0; sj < armySize; sj++) { // for every hero in j there must be the same hero in i
+				leftUsedHero = false; 
+				rightMonster = heroMonsterArmies[j].monsters[sj];
+				if (monsterReference[rightMonster].isHero) { // mob is a hero
+					for (size_t si = 0; si < leftHeroListSize; si++) {
+						if (leftHeroList[si] == rightMonster) {
+							leftUsedHero = true;
+							break;
+						}
+					}
+					if (!leftUsedHero) {
+						usedHeroSubset = false;
+						break;
+					}
+				}
+			}
+			if (usedHeroSubset) {
+				currentFightResult->dominated = true;
+				break;
+			}
+		}
+	}
+}
+
 void checkHeroDominance(
 	vector<Army> & heroMonsterArmies,
 	size_t heroMonsterArmiesSize,
@@ -304,11 +347,9 @@ void checkHeroDominance(
 	int leftFollowerCost;
 	FightResult * currentFightResult;
 	size_t leftHeroListSize;
-	int8_t rightMonster;
 	int8_t leftMonster;
 	int8_t leftHeroList[6];
 
-	bool usedHeroSubset, leftUsedHero;
 	for (size_t i = 0; i < heroMonsterArmiesSize; i++) {
 		leftFollowerCost = heroMonsterArmies[i].followerCost;
 		currentFightResult = &heroMonsterArmies[i].lastFightData;
@@ -332,34 +373,15 @@ void checkHeroDominance(
 				}
 			}
 
-			// if i costs more followers and got less far than j, then i is dominated
-			for (size_t j = i+1; j < heroMonsterArmiesSize; j++) {
-				if (leftFollowerCost < heroMonsterArmies[j].followerCost) {
-					break;
-				} else if (*currentFightResult <= heroMonsterArmies[j].lastFightData) { // i has more followers implicitly
-					usedHeroSubset = true; // If j doesn't use a strict subset of the heroes i used, it cannot dominate i
-					for (size_t sj = 0; sj < armySize; sj++) { // for every hero in j there must be the same hero in i
-						leftUsedHero = false; 
-						rightMonster = heroMonsterArmies[j].monsters[sj];
-						if (monsterReference[rightMonster].isHero) { // mob is a hero
-							for (size_t si = 0; si < leftHeroListSize; si++) {
-								if (leftHeroList[si] == rightMonster) {
-									leftUsedHero = true;
-									break;
-								}
-							}
-							if (!leftUsedHero) {
-								usedHeroSubset = false;
-								break;
-							}
-						}
-					}
-					if (usedHeroSubset) {
-						currentFightResult->dominated = true;
-						break;
-					}
-				}
-			}
+			checkCurrentFightDominance(
+				heroMonsterArmies,
+				heroMonsterArmiesSize,
+				leftHeroList,
+				leftHeroListSize,
+				leftFollowerCost,
+				currentFightResult,
+				armySize,
+				i);
 		}
 	}
 }
