@@ -302,6 +302,36 @@ void checkMonsterDominance(
 	}
 }
 
+bool usedHeroSubset(
+	vector<Army> & heroMonsterArmies,
+	size_t armySize,
+	int8_t * leftHeroList,
+	size_t leftHeroListSize,
+	size_t j) {
+
+	// If j doesn't use a strict subset of the heroes i used, it cannot dominate i
+	bool leftUsedHero;
+	int8_t rightMonster;
+
+	for (size_t sj = 0; sj < armySize; sj++) { // for every hero in j there must be the same hero in i
+		leftUsedHero = false; 
+		rightMonster = heroMonsterArmies[j].monsters[sj];
+		if (monsterReference[rightMonster].isHero) { // mob is a hero
+			for (size_t si = 0; si < leftHeroListSize; si++) {
+				if (leftHeroList[si] == rightMonster) {
+					leftUsedHero = true;
+					break;
+				}
+			}
+			if (!leftUsedHero) {
+				return false;
+			}
+		}
+	}
+
+	return true;
+}
+
 void checkCurrentFightDominance (
 	vector<Army> & heroMonsterArmies,
 	size_t heroMonsterArmiesSize,
@@ -312,32 +342,12 @@ void checkCurrentFightDominance (
 	size_t armySize,
 	size_t i) {
 
-	bool usedHeroSubset, leftUsedHero;
-	int8_t rightMonster;
-
 	// if i costs more followers and got less far than j, then i is dominated
 	for (size_t j = i+1; j < heroMonsterArmiesSize; j++) {
 		if (leftFollowerCost < heroMonsterArmies[j].followerCost) {
 			break;
 		} else if (*currentFightResult <= heroMonsterArmies[j].lastFightData) { // i has more followers implicitly
-			usedHeroSubset = true; // If j doesn't use a strict subset of the heroes i used, it cannot dominate i
-			for (size_t sj = 0; sj < armySize; sj++) { // for every hero in j there must be the same hero in i
-				leftUsedHero = false; 
-				rightMonster = heroMonsterArmies[j].monsters[sj];
-				if (monsterReference[rightMonster].isHero) { // mob is a hero
-					for (size_t si = 0; si < leftHeroListSize; si++) {
-						if (leftHeroList[si] == rightMonster) {
-							leftUsedHero = true;
-							break;
-						}
-					}
-					if (!leftUsedHero) {
-						usedHeroSubset = false;
-						break;
-					}
-				}
-			}
-			if (usedHeroSubset) {
+			if (usedHeroSubset(heroMonsterArmies, armySize, leftHeroList, leftHeroListSize, j)) {
 				currentFightResult->dominated = true;
 				break;
 			}
