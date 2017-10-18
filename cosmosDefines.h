@@ -16,6 +16,8 @@ extern vector<int8_t> availableHeroes; // Contains all User Heroes, readily Leve
 extern vector<int8_t> monsterList; // Contains pointers to raw Monster Data from a1 to f15, will be sorted by follower cost
 extern map<string, int8_t> monsterMap; // Maps monster Names to their pointers (includes heroes)
 
+extern int8_t baseMonsterSize;
+
 static vector<Monster> monsterBaseList { // Raw Monster Data, holds the actual Objects
 	Monster( 20,   8,    1000,  "a1", air),
 	Monster( 48,   6,    3900,  "a2", air),

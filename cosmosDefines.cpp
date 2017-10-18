@@ -4,17 +4,19 @@ vector<int8_t> monsterList {}; // Contains pointers to raw Monster Data from a1 
 map<string, int8_t> monsterMap {}; // Maps monster Names to their pointers (includes heroes)
 
 vector<int8_t> availableHeroes {};
+int8_t baseMonsterSize;
 
 // Make sure all the values are set
 void initMonsterData() {
 	// Sort MonsterList by followers
 	sort(monsterBaseList.begin(), monsterBaseList.end(), isCheaper);
+	baseMonsterSize = monsterBaseList.size();
 
 	// Initialize Monster Data
 	monsterReference.clear();
 	monsterMap.clear();
 	monsterList.clear();
-	for (size_t i = 0; i < monsterBaseList.size(); i++) {
+	for (size_t i = 0; i < baseMonsterSize; i++) {
 		monsterReference.push_back(monsterBaseList[i]);
 		monsterList.push_back(i);
 		monsterMap.insert(pair<string, int8_t>(monsterBaseList[i].name, i));

@@ -302,14 +302,14 @@ void checkMonsterDominance(
 	}
 }
 
-uint64_t calcHeroLineup(Army &army, size_t armySize) {
+uint64_t calcHeroLineup(int8_t * monsters, size_t armySize) {
 	int8_t heroId;
 
 	// HEY YOU!  This will fail once a user can input more than 64 heroes.
 	uint64_t heroLineup = 0;
 
 	for (size_t i = 0; i < armySize; i++) {
-		heroId = army.monsters[i] - baseMonsterSize;
+		heroId = monsters[i] - baseMonsterSize;
 
 		// instead of checking monsterReference to see if the id is a hero,
 		// we know monsterReference's first baseMonsterSize entries are monsters
@@ -344,7 +344,7 @@ void checkHeroDominance(
 
 		// A result is dominated If:
 		if (!currentFightResult->dominated) {
-			uint64_t leftHeroLineup = calcHeroLineup(heroMonsterArmies[i], armySize);
+			uint64_t leftHeroLineup = calcHeroLineup(heroMonsterArmies[i].monsters, armySize);
 
 			// if i costs more followers and got less far than j, then i is dominated
 			for (size_t j = i+1; j < heroMonsterArmiesSize; j++) {
@@ -352,7 +352,7 @@ void checkHeroDominance(
 					break;
 				} else if (*currentFightResult <= heroMonsterArmies[j].lastFightData) { // i has more followers implicitly
 					// If j doesn't use a strict subset of the heroes i used, it cannot dominate i
-					uint64_t rightHeroLineup = calcHeroLineup(heroMonsterArmies[j], armySize);
+					uint64_t rightHeroLineup = calcHeroLineup(heroMonsterArmies[j].monsters, armySize);
 
 					if ((rightHeroLineup & leftHeroLineup) == rightHeroLineup) {
 						currentFightResult->dominated = true;
