@@ -132,7 +132,7 @@ static vector<Monster> baseHeroes { // Raw, unleveld Hero Data, holds actual Obj
 
 	Monster( 70, 42, 0, "zeth",              water, {revenge, all, 0.1}),
 	Monster( 76, 46, 0, "koth",              earth, {revenge, all, 0.15}),
-	Monster( 82, 50, 0, "gurth",             fire,  {revenge, all, 0.2}),
+	Monster( 82, 50, 0, "gurth",             air,   {revenge, all, 0.2}),
 
 	Monster( 75, 45, 0, "spyke",             air,   {training,self, 5}),
 	Monster( 70, 55, 0, "aoyuki",            water, {rainbow, self, 50}),
