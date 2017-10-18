@@ -57,8 +57,10 @@ void FightData::LoadHeroInfluences() {
 
 	for (int i = lost; i < armySize; i++) {
 		if (cumAoeDamageTaken >= currentMonster->hp) { // Check for Backline Deaths
-			lost += (lost == i);
-			currentMonster = &monsterReference[lineup[lost]];
+			if (lost == i) {
+				OnCurrentMonsterDeath();
+				currentMonster = &monsterReference[lineup[lost]];
+			}
 		} else {
 			// track elements of monsters before current monster
 			if (i != lost)
@@ -158,8 +160,7 @@ int FightData::GetAoeDamageGiven() {
 	return aoeDamage + paoeDamage;
 }
 
-void FightData::ApplyDamage(int enemyDamageGiven, int enemyAoeDamageGiven)
-{
+void FightData::ApplyDamage(int enemyDamageGiven, int enemyAoeDamageGiven) {
 	// Write values into permanent Variables for the next iteration
 	frontDamageTaken += enemyDamageGiven;
 	cumAoeDamageTaken += enemyAoeDamageGiven;
@@ -167,14 +168,18 @@ void FightData::ApplyDamage(int enemyDamageGiven, int enemyAoeDamageGiven)
 
 	// Check if the first Monster died (otherwise it will be revived next turn)
 	if (currentMonster->hp <= frontDamageTaken) {
-		lost++;
-		berserkProcs = 0;
+		OnCurrentMonsterDeath();
 		frontDamageTaken = cumAoeDamageTaken;
 	} else if (skillType[lost] == wither) {
 		int remainingHealth = currentMonster->hp - frontDamageTaken;
 		remainingHealth = remainingHealth * skillAmount[lost] + 0.5; // round up
 		frontDamageTaken = currentMonster->hp - remainingHealth;
 	}
+}
+
+void FightData::OnCurrentMonsterDeath() {
+	lost++;
+	berserkProcs = 0;
 }
 
 // TODO: Implement MAX AOE Damage to make sure nothing gets revived

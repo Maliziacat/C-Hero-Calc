@@ -24,7 +24,8 @@ enum SkillType {
 	adapt,
 	training,
 	rainbow,
-	wither
+	wither,
+	revenge
 };
 
 enum Element {

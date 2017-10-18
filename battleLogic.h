@@ -33,6 +33,8 @@ public:
 	int GetAoeDamageGiven();
 	void ApplyDamage(int enemyDamageGiven, int enemyAoeDamageGiven);
 
+	void OnCurrentMonsterDeath();
+
 	// army-wide data
 	size_t lost;
 	size_t armySize;
