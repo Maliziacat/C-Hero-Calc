@@ -32,6 +32,7 @@ public:
 	int GetDamageGiven();
 	int GetAoeDamageGiven();
 	void ApplyDamage(int enemyDamageGiven, int enemyAoeDamageGiven);
+	void ApplyRevengeDamage(int revengeDamage);
 
 	void OnCurrentMonsterDeath();
 
@@ -51,6 +52,7 @@ public:
 	int protection;
 	int aoeDamage;
 	int paoeDamage;
+	int revengeDamage;
 	int healingSkill;
 	int pureMonsters;
 	int elements; // this should be read as a 4-bit array

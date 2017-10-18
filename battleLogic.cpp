@@ -26,6 +26,7 @@ FightData::FightData(Army &army) {
 	protection = 0;
 	aoeDamage = 0;
 	paoeDamage = 0;
+	revengeDamage = 0;
 	healingSkill = 0;
 	pureMonsters = 0;
 }
@@ -46,6 +47,7 @@ void FightData::LoadHeroInfluences() {
 	protection = 0;
 	aoeDamage = 0;
 	paoeDamage = 0;
+	revengeDamage = 0;
 	healingSkill = 0;
 	pureMonsters = 0;
 	elements = 0;
@@ -58,6 +60,9 @@ void FightData::LoadHeroInfluences() {
 	for (int i = lost; i < armySize; i++) {
 		if (cumAoeDamageTaken >= currentMonster->hp) { // Check for Backline Deaths
 			if (lost == i) {
+				if (skillType[lost] == revenge) {
+					aoeDamage += currentMonster->damage * skillAmount[lost] + 0.5;
+				}
 				OnCurrentMonsterDeath();
 				currentMonster = &monsterReference[lineup[lost]];
 			}
@@ -168,9 +173,23 @@ void FightData::ApplyDamage(int enemyDamageGiven, int enemyAoeDamageGiven) {
 
 	// Check if the first Monster died (otherwise it will be revived next turn)
 	if (currentMonster->hp <= frontDamageTaken) {
+		if (skillType[lost] == revenge)
+			revengeDamage = currentMonster->damage * skillAmount[lost] + 0.5;
+		OnCurrentMonsterDeath();
+		frontDamageTaken = cumAoeDamageTaken;
+	}
+}
+
+void FightData::ApplyRevengeDamage(int revengeDamage) {
+	frontDamageTaken += revengeDamage;
+	cumAoeDamageTaken += revengeDamage;
+
+	if (currentMonster->hp <= frontDamageTaken) {
 		OnCurrentMonsterDeath();
 		frontDamageTaken = cumAoeDamageTaken;
 	} else if (skillType[lost] == wither) {
+		// wither damage happens after AoE damage,
+		// so probably happens after revenge damage
 		int remainingHealth = currentMonster->hp - frontDamageTaken;
 		remainingHealth = remainingHealth * skillAmount[lost] + 0.5; // round up
 		frontDamageTaken = currentMonster->hp - remainingHealth;
@@ -238,11 +257,16 @@ void simulateFight(Army & left, Army & right, bool verbose) {
 		leftData.ApplyDamage(rightData.GetDamageGiven(), rightData.GetAoeDamageGiven());
 		rightData.ApplyDamage(leftData.GetDamageGiven(), leftData.GetAoeDamageGiven());
 
+		leftData.ApplyRevengeDamage(rightData.revengeDamage);
+		rightData.ApplyRevengeDamage(leftData.revengeDamage);
+
 		++turncounter;
 
 		// Output detailed fight Data for debugging
 		if (verbose) {
-			cout << setw(3) << leftData.lost << " " << setw(3) << leftData.frontDamageTaken << " " << setw(3) << rightData.lost << " " << setw(3) << rightData.frontDamageTaken << endl;
+			cout << "Turn " << setw(2) << turncounter << ": ";
+			cout << "Left monster: " << leftData.lost << "  damage taken: " << setw(3) << leftData.frontDamageTaken << "  aoe taken: " << setw(3) << leftData.cumAoeDamageTaken;
+			cout << "  Right monster: " << rightData.lost << "  damage taken: " << setw(3) << rightData.frontDamageTaken << "  aoe taken: " << setw(3) << rightData.cumAoeDamageTaken << endl;
 		}
 	}
 
