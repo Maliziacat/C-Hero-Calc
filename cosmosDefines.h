@@ -118,6 +118,10 @@ static vector<Monster> baseHeroes { // Raw, unleveld Hero Data, holds actual Obj
 	Monster( 48, 20, 0, "erebus",            fire,  {champion,fire, 2}),
 	Monster( 62, 36, 0, "pontus",            water, {adapt,   self, 2}),
 
+	Monster( 36, 14, 0, "oymos",             air,   {buff,    air, 4}),
+	Monster( 32, 32, 0, "xarth",             earth, {champion,earth, 2}),
+	Monster( 76, 32, 0, "atzar",             fire,  {adapt,   self, 2}),
+
 	Monster( 45, 20, 0, "ladyoftwilight",    air,   {protect, all, 1}),
 	Monster( 70, 30, 0, "tiny",              earth, {aoe,     all, 2}),
 	Monster( 90, 40, 0, "nebra",             fire,  {buff,    all, 8}),
@@ -126,13 +130,13 @@ static vector<Monster> baseHeroes { // Raw, unleveld Hero Data, holds actual Obj
 	Monster( 72, 48, 0, "brynhildr",         air,   {champion,all, 4}),
 	Monster( 78, 52, 0, "groth",             fire,  {champion,all, 5}),
 
+	Monster( 42, 70, 0, "zeth",              water, {nothing, all, 0.1}),
+	Monster( 46, 76, 0, "koth",              earth, {nothing, all, 0.15}),
+	Monster( 50, 82, 0, "gurth",             fire,  {nothing, all, 0.2}),
+
 	Monster( 75, 45, 0, "spyke",             air,   {training,self, 5}),
 	Monster( 70, 55, 0, "aoyuki",            water, {rainbow, self, 50}),
 	Monster( 50,100, 0, "gaiabyte",          earth, {wither,  self, 0.5}),
-
-	Monster( 36, 14, 0, "oymos",             air,   {buff,    air, 4}),
-	Monster( 32, 32, 0, "xarth",             earth, {champion,earth, 2}),
-	Monster( 76, 32, 0, "atzar",             fire,  {adapt,   self, 2}),
 
 	Monster( 20, 10, 0, "valor",             air,   {protect, air, 1}),
 	Monster( 30,  8, 0, "rokka",             earth, {protect, earth, 1}),
@@ -184,6 +188,10 @@ static map<string, int> rarities { // hero rarities
 	{"erebus", 1},
 	{"pontus", 2},
 
+	{"oymos", 0},
+	{"xarth", 1},
+	{"atzar", 2},
+
 	{"ladyoftwilight", 0},
 	{"tiny", 1},
 	{"nebra", 2},
@@ -192,13 +200,13 @@ static map<string, int> rarities { // hero rarities
 	{"brynhildr", 2},
 	{"groth", 2},
 
+	{"zeth", 2},
+	{"koth", 2},
+	{"gurth", 2},
+
 	{"spyke", 2},
 	{"aoyuki", 2},
 	{"gaiabyte", 2},
-
-	{"oymos", 0},
-	{"xarth", 1},
-	{"atzar", 2},
 
 	{"valor", 0},
 	{"rokka", 0},

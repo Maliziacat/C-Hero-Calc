@@ -2,7 +2,7 @@
 // Brainisdead variant, added names of new heroes and input info comment
 // input now needs to be separated by commas. To enter heroes, do <name>:<level>, for example:
 // a2,e3,lady of twilight:1,e4
-// Clean-up and optimization done by Diceycle
+// Clean-up and optimization done by Diceycle and Malizia
 
 #include <iostream>
 #include <vector>
@@ -497,10 +497,11 @@ int main(int argc, char** argv) {
 		 0, 0, 0,         // "aquortis", "aeris", "geum"
 		 0, 0, 0,         // "rudean","aural","geror"
 		 0, 0, 0,         // "ourea", "erebus", "pontus"
+		 0, 0, 0,         // "oymos", "xarth", "atzar"
 		 0, 0, 0,         // "ladyoftwilight","tiny","nebra"
 		 0, 0, 0,         // "veildur", "brynhildr", "groth"
+		 0, 0, 0,         // "zeth", "koth", "gurth"
 		 0, 0, 0,         // "spyke", "aoyuki", "gaiabyte"
-		 0, 0, 0,         // "oymos", "xarth", "atzar"
 		 0, 0, 0, 0,      // "valor","rokka","pyromancer","bewat"
 		 0, 0, 0, 0,      // "nicte", "forestdruid","ignitor","undine"
 		 0, 0, 0          // "chroma", "petry", "zaytus"

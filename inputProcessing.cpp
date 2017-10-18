@@ -100,7 +100,7 @@ vector<int> takeHerolevelInput() {
 		}
 	}
 	if (!fileInput) {
-		cout << "Enter the level of the hero, whose name is shown." << endl;
+		cout << "Enter the level of the hero whose name is shown." << endl;
 		for (size_t i = 0; i < baseHeroes.size(); i++) {
 			input = getResistantInput(baseHeroes[i].name + ": ", heroInputHelp, integer);
 			levels.push_back(stoi(input));
