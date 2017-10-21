@@ -89,6 +89,7 @@ class Army {
 		int32_t followerCost;
 		int8_t monsters[6];
 		int8_t monsterAmount;
+		int64_t heroLineup;
 
 		void add(int8_t m);
 		void replace(int i, int8_t m);
