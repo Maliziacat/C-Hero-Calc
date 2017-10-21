@@ -44,7 +44,7 @@ public:
 	int frontDamageTaken;
 	int healing;
 	int cumAoeDamageTaken;
-	float berserkProcs;
+	int berserkProcs;
 
 	// skill data
 	int damage;

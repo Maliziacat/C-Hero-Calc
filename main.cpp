@@ -326,7 +326,7 @@ void checkHeroDominance(
 
 		// A result is dominated If:
 		if (!currentFightResult->dominated) {
-			uint64_t leftHeroLineup = heroMonsterArmies[i].heroLineup;
+			uint32_t leftHeroLineup = heroMonsterArmies[i].heroLineup;
 
 			for (size_t j = i+1; j < heroMonsterArmiesSize; j++) {
 				if (leftFollowerCost < heroMonsterArmies[j].followerCost) {
@@ -334,7 +334,7 @@ void checkHeroDominance(
 				}
 
 				// If j doesn't use a strict subset of the heroes i used, it cannot dominate i
-				uint64_t rightHeroLineup = heroMonsterArmies[j].heroLineup;
+				uint32_t rightHeroLineup = heroMonsterArmies[j].heroLineup;
 				if ((rightHeroLineup & leftHeroLineup) == rightHeroLineup) {
 					if (*currentFightResult <= heroMonsterArmies[j].lastFightData) { // i has equal followers yet worse results
 						currentFightResult->dominated = true;
