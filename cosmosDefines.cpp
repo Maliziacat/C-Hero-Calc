@@ -10,13 +10,13 @@ int8_t baseMonsterSize;
 void initMonsterData() {
 	// Sort MonsterList by followers
 	sort(monsterBaseList.begin(), monsterBaseList.end(), isCheaper);
-	baseMonsterSize = monsterBaseList.size();
+	baseMonsterSize = (int8_t)(monsterBaseList.size());
 
 	// Initialize Monster Data
 	monsterReference.clear();
 	monsterMap.clear();
 	monsterList.clear();
-	for (size_t i = 0; i < baseMonsterSize; i++) {
+	for (int8_t i = 0; i < baseMonsterSize; i++) {
 		monsterReference.push_back(monsterBaseList[i]);
 		monsterList.push_back(i);
 		monsterMap.insert(pair<string, int8_t>(monsterBaseList[i].name, i));
@@ -54,8 +54,8 @@ Monster getLeveledHero(const Monster & m, int rarity, int level) {
 	}
 	int value = m.hp + m.damage;
 	return Monster(
-		round(m.hp + points * ((double)m.hp) / value),
-		m.damage + round(points * ((double)m.damage) / value),
+		(int)round(m.hp + points * ((double)m.hp) / value),
+		m.damage + (int)round(points * ((double)m.damage) / value),
 		m.cost,
 		m.name + ":" + to_string(level),
 		m.element,
@@ -68,5 +68,5 @@ int8_t addLeveledHero(Monster hero, int level) {
 	Monster m = getLeveledHero(hero, rarities.at(hero.name), level);
 	monsterReference.emplace_back(m);
 
-	return monsterReference.size() - 1;
+	return (int8_t)(monsterReference.size()) - 1;
 }

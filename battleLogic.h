@@ -37,8 +37,8 @@ public:
 	void OnCurrentMonsterDeath();
 
 	// army-wide data
-	size_t lost;
-	size_t armySize;
+	int8_t lost;
+	int8_t armySize;
 	int8_t *lineup;
 
 	int frontDamageTaken;

@@ -111,8 +111,8 @@ static vector<Monster> baseHeroes { // Raw, unleveld Hero Data, holds actual Obj
 	Monster( 75,  2, 0, "geum",              earth, {berserk, self, 2}),
 
 	Monster( 38, 12, 0, "rudean",            fire,  {buff,    fire, 3}),
-	Monster( 18, 50, 0, "aural",             water, {berserk, self, 1.2}),
-	Monster( 46, 46, 0, "geror",             air,   {friends, self, 1.2}),
+	Monster( 18, 50, 0, "aural",             water, {berserk, self, (float)1.2}),
+	Monster( 46, 46, 0, "geror",             air,   {friends, self, (float)1.2}),
 
 	Monster( 30, 16, 0, "ourea",             earth, {buff,    earth, 3}),
 	Monster( 48, 20, 0, "erebus",            fire,  {champion,fire, 2}),
@@ -130,13 +130,13 @@ static vector<Monster> baseHeroes { // Raw, unleveld Hero Data, holds actual Obj
 	Monster( 72, 48, 0, "brynhildr",         air,   {champion,all, 4}),
 	Monster( 78, 52, 0, "groth",             fire,  {champion,all, 5}),
 
-	Monster( 70, 42, 0, "zeth",              water, {revenge, all, 0.1}),
-	Monster( 76, 46, 0, "koth",              earth, {revenge, all, 0.15}),
-	Monster( 82, 50, 0, "gurth",             air,   {revenge, all, 0.2}),
+	Monster( 70, 42, 0, "zeth",              water, {revenge, all, (float)0.1}),
+	Monster( 76, 46, 0, "koth",              earth, {revenge, all, (float)0.15}),
+	Monster( 82, 50, 0, "gurth",             air,   {revenge, all, (float)0.2}),
 
 	Monster( 75, 45, 0, "spyke",             air,   {training,self, 5}),
 	Monster( 70, 55, 0, "aoyuki",            water, {rainbow, self, 50}),
-	Monster( 50,100, 0, "gaiabyte",          earth, {wither,  self, 0.5}),
+	Monster( 50,100, 0, "gaiabyte",          earth, {wither,  self, (float)0.5}),
 
 	Monster( 20, 10, 0, "valor",             air,   {protect, air, 1}),
 	Monster( 30,  8, 0, "rokka",             earth, {protect, earth, 1}),
