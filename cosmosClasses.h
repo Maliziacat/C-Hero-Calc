@@ -41,7 +41,7 @@ enum Element {
 struct HeroSkill {
 	SkillType type;
 	Element target;
-	double amount;
+	float amount;
 };
 static HeroSkill none = HeroSkill({nothing, air, 1}); // base skill used for normal monsters
 

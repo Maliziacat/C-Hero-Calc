@@ -75,7 +75,7 @@ string getResistantInput(string query, string help, QueryType queryType = raw);
 bool askYesNoQuestion(string question, string help);
 
 // Output things on the command line. Using shouldOutput this can be easily controlled globally
-void debugOutput(int timeStamp, string message, bool shouldOutput, bool finishLastOutput, bool finishLine);
+void debugOutput(time_t timeStamp, string message, bool shouldOutput, bool finishLastOutput, bool finishLine);
 
 // Promt the User via command line to input his hero levels and return them as a vector<int>
 vector<int> takeHerolevelInput();

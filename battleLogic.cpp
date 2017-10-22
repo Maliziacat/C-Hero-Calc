@@ -34,7 +34,7 @@ FightData::FightData(Army &army) {
 void FightData::LoadSkills() {
 	HeroSkill * skill;
 
-	for (int i = lost; i < armySize; i++) {
+	for (int8_t i = lost; i < armySize; i++) {
 		skill = &monsterReference[lineup[i]].skill;
 		skillType[i] = skill->type;
 		skillTarget[i] = skill->target;
@@ -61,7 +61,7 @@ void FightData::LoadHeroInfluences() {
 		if (cumAoeDamageTaken >= currentMonster->hp) { // Check for Backline Deaths
 			if (lost == i) {
 				if (skillType[lost] == revenge) {
-					aoeDamage += currentMonster->damage * skillAmount[lost] + 0.5;
+					aoeDamage += (int)(currentMonster->damage * skillAmount[lost] + 0.5);
 				}
 				OnCurrentMonsterDeath();
 				currentMonster = &monsterReference[lineup[lost]];
@@ -74,16 +74,16 @@ void FightData::LoadHeroInfluences() {
 			if (skillType[i] == nothing) {
 				pureMonsters++; // count for friends ability
 			} else if (skillType[i] == protect && (skillTarget[i] == all || skillTarget[i] == currentMonster->element)) {
-				protection += skillAmount[i];
+				protection += (int)(skillAmount[i]);
 			} else if (skillType[i] == buff && (skillTarget[i] == all || skillTarget[i] == currentMonster->element)) {
-				damageBuff += skillAmount[i];
+				damageBuff += (int)(skillAmount[i]);
 			} else if (skillType[i] == champion && (skillTarget[i] == all || skillTarget[i] == currentMonster->element)) {
-				damageBuff += skillAmount[i];
-				protection += skillAmount[i];
+				damageBuff += (int)(skillAmount[i]);
+				protection += (int)(skillAmount[i]);
 			} else if (skillType[i] == heal) {
-				healingSkill += skillAmount[i];
+				healingSkill += (int)(skillAmount[i]);
 			} else if (skillType[i] == aoe) {
-				aoeDamage += skillAmount[i];
+				aoeDamage += (int)(skillAmount[i]);
 			} else if (skillType[i] == pAoe && i == lost) {
 				paoeDamage += currentMonster->damage;
 			}
@@ -128,16 +128,16 @@ void FightData::CalcDamage(Element enemyElement, int enemyProtection, int turnco
 
 	// Handle Monsters with skills berserk or friends
 	if (skillType[lost] == friends) {
-		damage *= pow(skillAmount[lost], pureMonsters);
+		damage = (int)(damage * pow(skillAmount[lost], pureMonsters));
 	} else if (skillType[lost] == adapt && currentMonster->element == enemyElement) {
-		damage *= skillAmount[lost];
+		damage = (int)(damage * skillAmount[lost]);
 	} else if (skillType[lost] == berserk) {
-		damage *= pow(skillAmount[lost], berserkProcs);
+		damage = (int)(damage * pow(skillAmount[lost], berserkProcs));
 		berserkProcs++;
 	} else if (skillType[lost] == training) {
-		damage += skillAmount[lost] * turncounter;
+		damage += (int)(skillAmount[lost] * turncounter);
 	} else if (skillType[lost] == rainbow && elements == 15) { // 15 is 1111 in binary, so all four elements are included
-		damage += skillAmount[lost];
+		damage += (int)(skillAmount[lost]);
 	}
 
 	// Add Buff Damage
@@ -146,7 +146,7 @@ void FightData::CalcDamage(Element enemyElement, int enemyProtection, int turnco
 	// Handle Elemental advantage
 	elementalDifference = (currentMonster->element - enemyElement);
 	if (elementalDifference == -1 || elementalDifference == 3) {
-		damage *= elementalBoost;
+		damage = (int)(damage * elementalBoost);
 	}
 
 	// Handle Protection
@@ -174,7 +174,7 @@ void FightData::ApplyDamage(int enemyDamageGiven, int enemyAoeDamageGiven) {
 	// Check if the first Monster died (otherwise it will be revived next turn)
 	if (currentMonster->hp <= frontDamageTaken) {
 		if (skillType[lost] == revenge)
-			revengeDamage = currentMonster->damage * skillAmount[lost] + 0.5;
+			revengeDamage = (int)(currentMonster->damage * skillAmount[lost] + 0.5);
 		OnCurrentMonsterDeath();
 		frontDamageTaken = cumAoeDamageTaken;
 	}
@@ -191,7 +191,7 @@ void FightData::ApplyRevengeDamage(int revengeDamage) {
 		// wither damage happens after AoE damage,
 		// so probably happens after revenge damage
 		int remainingHealth = currentMonster->hp - frontDamageTaken;
-		remainingHealth = remainingHealth * skillAmount[lost] + 0.5; // round up
+		remainingHealth = (int)(remainingHealth * skillAmount[lost] + 0.5); // round up
 		frontDamageTaken = currentMonster->hp - remainingHealth;
 	}
 }
