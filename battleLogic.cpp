@@ -187,7 +187,7 @@ void FightData::ApplyRevengeDamage(int revengeDamage) {
 	if (currentMonster->hp <= frontDamageTaken) {
 		OnCurrentMonsterDeath();
 		frontDamageTaken = cumAoeDamageTaken;
-	} else if (skillType[lost] == wither) {
+	} else if (skillType[lost] == wither && frontDamageTaken != cumAoeDamageTaken) {
 		// wither damage happens after AoE damage,
 		// so probably happens after revenge damage
 		int remainingHealth = currentMonster->hp - frontDamageTaken;
@@ -265,8 +265,8 @@ void simulateFight(Army & left, Army & right, bool verbose) {
 		// Output detailed fight Data for debugging
 		if (verbose) {
 			cout << "Turn " << setw(2) << turncounter << ": ";
-			cout << "Left monster: " << leftData.lost << "  damage taken: " << setw(3) << leftData.frontDamageTaken << "  aoe taken: " << setw(3) << leftData.cumAoeDamageTaken;
-			cout << "  Right monster: " << rightData.lost << "  damage taken: " << setw(3) << rightData.frontDamageTaken << "  aoe taken: " << setw(3) << rightData.cumAoeDamageTaken << endl;
+			cout << "Left monster: " << (int)leftData.lost << "  damage taken: " << setw(3) << leftData.frontDamageTaken << "  aoe taken: " << setw(3) << leftData.cumAoeDamageTaken;
+			cout << "  Right monster: " << (int)rightData.lost << "  damage taken: " << setw(3) << rightData.frontDamageTaken << "  aoe taken: " << setw(3) << rightData.cumAoeDamageTaken << endl;
 		}
 	}
 
