@@ -302,25 +302,6 @@ void checkMonsterDominance(
 	}
 }
 
-uint64_t calcHeroLineup(int8_t * monsters, size_t armySize) {
-	int8_t heroId;
-
-	// HEY YOU!  This will fail once a user can input more than 64 heroes.
-	uint64_t heroLineup = 0;
-
-	for (size_t i = 0; i < armySize; i++) {
-		heroId = monsters[i] - baseMonsterSize;
-
-		// instead of checking monsterReference to see if the id is a hero,
-		// we know monsterReference's first baseMonsterSize entries are monsters
-		if (heroId >= 0) {
-			heroLineup |= (uint64_t) 1 << heroId;
-		}
-	}
-
-	return heroLineup;
-}
-
 void checkHeroDominance(
 	vector<Army> & heroMonsterArmies,
 	size_t heroMonsterArmiesSize,
@@ -330,6 +311,7 @@ void checkHeroDominance(
 	int leftFollowerCost;
 	FightResult * currentFightResult;
 
+	// iterate from lowest follower cost to highest
 	for (size_t i = 0; i < heroMonsterArmiesSize; i++) {
 		leftFollowerCost = heroMonsterArmies[i].followerCost;
 		currentFightResult = &heroMonsterArmies[i].lastFightData;
@@ -344,17 +326,17 @@ void checkHeroDominance(
 
 		// A result is dominated If:
 		if (!currentFightResult->dominated) {
-			uint64_t leftHeroLineup = calcHeroLineup(heroMonsterArmies[i].monsters, armySize);
+			uint32_t leftHeroLineup = heroMonsterArmies[i].heroLineup;
 
-			// if i costs more followers and got less far than j, then i is dominated
 			for (size_t j = i+1; j < heroMonsterArmiesSize; j++) {
 				if (leftFollowerCost < heroMonsterArmies[j].followerCost) {
 					break;
-				} else if (*currentFightResult <= heroMonsterArmies[j].lastFightData) { // i has more followers implicitly
-					// If j doesn't use a strict subset of the heroes i used, it cannot dominate i
-					uint64_t rightHeroLineup = calcHeroLineup(heroMonsterArmies[j].monsters, armySize);
+				}
 
-					if ((rightHeroLineup & leftHeroLineup) == rightHeroLineup) {
+				// If j doesn't use a strict subset of the heroes i used, it cannot dominate i
+				uint32_t rightHeroLineup = heroMonsterArmies[j].heroLineup;
+				if ((rightHeroLineup & leftHeroLineup) == rightHeroLineup) {
+					if (*currentFightResult <= heroMonsterArmies[j].lastFightData) { // i has equal followers yet worse results
 						currentFightResult->dominated = true;
 						break;
 					}

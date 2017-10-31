@@ -66,15 +66,17 @@ bool isCheaper(const Monster & a, const Monster & b);
 // Defines the results of a fight between two armies; monstersLost and damage desribe the condition of the winning side
 class FightResult {
 	public :
-		int16_t damage;             // how much damage dealt to the current leading mob of the winning side
-		int16_t leftAoeDamage;      // how much aoe damage left took
-		int16_t rightAoeDamage;     // how much aoe damage right took
-		int8_t berserk;            // berserk multiplier, if there is a berserker in the front
-		int8_t monstersLost;    // how many mobs lost on the winning side (the other side lost all)
-		int8_t turncounter;     // how many turns have passed since the battle started
-		bool valid;             // If the result is valid
-		bool rightWon;          // false -> left win, true -> right win.
-		bool dominated;         // If the result is worse than another
+		uint16_t leftAoeDamage;         // how much aoe damage left took
+		uint16_t rightAoeDamage;        // how much aoe damage right took
+
+		uint8_t berserk;                // berserk multiplier, if there is a berserker in the front
+		uint8_t turncounter;            // how many turns have passed since the battle started
+
+		unsigned int damage       : 10; // how much damage dealt to the current leading mob of the winning side
+		unsigned int monstersLost :  3; // how many mobs lost on the winning side (the other side lost all)
+		unsigned int valid        :  1; // If the result is valid
+		unsigned int rightWon     :  1; // false -> left win, true -> right win.
+		unsigned int dominated    :  1; // If the result is worse than another
 
 		FightResult();
 
@@ -85,10 +87,11 @@ class FightResult {
 // Defines a single lineup of monsters
 class Army {
 	public:
-		FightResult lastFightData;
-		int32_t followerCost;
-		int8_t monsters[6];
-		int8_t monsterAmount;
+		FightResult lastFightData; // 8 bytes
+		int32_t followerCost;      // 4
+		int8_t monsters[6];        // 6
+		int8_t monsterAmount;      // 1
+		uint32_t heroLineup;       // 4
 
 		void add(int8_t m);
 		void replace(int i, int8_t m);

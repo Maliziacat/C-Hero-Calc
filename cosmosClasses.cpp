@@ -1,4 +1,5 @@
 #include "cosmosClasses.h"
+#include "cosmosDefines.h"
 
 vector<Monster> monsterReference {}; // Will be filled with leveled heroes if needed (determined by input)
 
@@ -44,6 +45,7 @@ bool FightResult::operator >=(FightResult & toCompare) {
 Army::Army(vector<int8_t> monsters) {
 	this->followerCost = 0;
 	this->monsterAmount = 0;
+	this->heroLineup = 0;
 	this->lastFightData = FightResult();
 
 	for(size_t i = 0; i < monsters.size(); i++) {
@@ -52,13 +54,26 @@ Army::Army(vector<int8_t> monsters) {
 }
 
 void Army::add(int8_t m) {
+	int8_t heroId = m - baseMonsterSize;
+	if (heroId >= 0)
+		this->heroLineup |= (uint32_t) 1 << heroId;
+
 	this->monsters[monsterAmount] = m;
 	this->followerCost += monsterReference[m].cost;
 	this->monsterAmount++;
 }
 
 void Army::replace(int i, int8_t m) {
+	int8_t heroId = this->monsters[i] - baseMonsterSize;
+	if (heroId >= 0)
+		this->heroLineup &= ~((uint32_t) 1 << heroId);
+
 	this->followerCost -= monsterReference[this->monsters[i]].cost;
+
+	heroId = m - baseMonsterSize;
+	if (heroId >= 0)
+		this->heroLineup |= (uint32_t) 1 << heroId;
+
 	this->monsters[i] = m;
 	this->followerCost += monsterReference[m].cost;
 }
