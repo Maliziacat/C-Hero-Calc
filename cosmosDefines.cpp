@@ -46,12 +46,30 @@ void initializeUserHeroes(vector<int> levels) {
 
 // Create a new hero with leveled stats and return it
 Monster getLeveledHero(const Monster & m, int rarity, int level) {
+	HeroSkill hallowSkill;
 	int points = level-1;
+
 	if (rarity == 1) {
 		points = 2 * points;
 	} else if (rarity == 2) {
 		points = 6 * points;
 	}
+
+	// replace hallow skill with actual skill
+	if (m.skill.type == hallow) {
+		hallowSkill.target = all;
+
+		if (rarity == 0) {
+			hallowSkill.type = protect;
+		} else if (rarity == 1) {
+			hallowSkill.type = buff;
+		} else if (rarity == 2) {
+			hallowSkill.type = champion;
+		}
+
+		hallowSkill.amount = (float)floor(level / 9);
+	}
+
 	int value = m.hp + m.damage;
 	return Monster(
 		(int)round(m.hp + points * ((double)m.hp) / value),
@@ -59,7 +77,7 @@ Monster getLeveledHero(const Monster & m, int rarity, int level) {
 		m.cost,
 		m.name + ":" + to_string(level),
 		m.element,
-		m.skill
+		m.skill.type == hallow ? hallowSkill : m.skill
 	);
 }
 

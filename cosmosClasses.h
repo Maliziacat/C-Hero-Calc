@@ -25,7 +25,8 @@ enum SkillType {
 	training,
 	rainbow,
 	wither,
-	revenge
+	revenge,
+	hallow
 };
 
 enum Element {
