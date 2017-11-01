@@ -67,17 +67,17 @@ bool isCheaper(const Monster & a, const Monster & b);
 // Defines the results of a fight between two armies; monstersLost and damage desribe the condition of the winning side
 class FightResult {
 	public :
-		uint16_t leftAoeDamage;         // how much aoe damage left took
-		uint16_t rightAoeDamage;        // how much aoe damage right took
+		unsigned int leftAoeDamage  : 16; // how much aoe damage left took
+		unsigned int rightAoeDamage : 16; // how much aoe damage right took
 
-		uint8_t berserk;                // berserk multiplier, if there is a berserker in the front
-		uint8_t turncounter;            // how many turns have passed since the battle started
+		unsigned int berserk        :  8; // berserk multiplier, if there is a berserker in the front
+		unsigned int turncounter    :  8; // how many turns have passed since the battle started
 
-		unsigned int damage       : 10; // how much damage dealt to the current leading mob of the winning side
-		unsigned int monstersLost :  3; // how many mobs lost on the winning side (the other side lost all)
-		unsigned int valid        :  1; // If the result is valid
-		unsigned int rightWon     :  1; // false -> left win, true -> right win.
-		unsigned int dominated    :  1; // If the result is worse than another
+		unsigned int damage         : 10; // how much damage dealt to the current leading mob of the winning side
+		unsigned int monstersLost   :  3; // how many mobs lost on the winning side (the other side lost all)
+		unsigned int valid          :  1; // If the result is valid
+		unsigned int rightWon       :  1; // false -> left win, true -> right win.
+		unsigned int dominated      :  1; // If the result is worse than another
 
 		FightResult();
 

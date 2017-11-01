@@ -482,6 +482,7 @@ int main(int argc, char** argv) {
 	bool userWantsContinue = true;
 	while (userWantsContinue) {
 		// Initialize global Data
+		totalFightsSimulated = 0;
 		best = Army();
 		initMonsterData();
 
