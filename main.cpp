@@ -455,7 +455,6 @@ int main(int argc, char** argv) {
 	}
 
 	// Declare Variables
-	vector<string> stringLineup {};
 	string inputString;
 	vector<int> yourHeroLevels;
 
@@ -468,27 +467,6 @@ int main(int argc, char** argv) {
 	maxMonstersAllowed = 6;         // Set this to how many Monsters should be in the solution (f.e 4 for X-3 Quests) 
 	minimumMonsterCost = 0;    // Minimum amount a monster used in the soluiton should cost. Useful for reducing the amount of monsters when you are sure you wont need them (f.e. a1 in dq20)
 	followerUpperBound = -1;        // Maximum Cost of the whole Lineup, -1 means unlimited
-	stringLineup = quests[1];      // Choose against which lineup you want to fight use one from above or make your own and then change the name accordingly
-	yourHeroLevels = {    // INPUT YOUR HERO LEVELS HERE (For manual editing: Names tell you which number is the level of which hero)
-		 0,               // "james"
-		 0, 0, 0,         // "hunter","shaman","alpha"
-		 0, 0, 0,         // "carl","nimue","athos"
-		 0, 0, 0,         // "jet","geron","rei"
-		 0, 0, 0,         // "ailen","faefyr","auri"
-		 0, 0, 0,         // "k41ry", "t4urus", "tr0n1x"
-		 0, 0, 0,         // "aquortis", "aeris", "geum"
-		 0, 0, 0,         // "rudean","aural","geror"
-		 0, 0, 0,         // "ourea", "erebus", "pontus"
-		 0, 0, 0,         // "oymos", "xarth", "atzar"
-		 0, 0, 0,         // "ladyoftwilight","tiny","nebra"
-		 0, 0, 0,         // "veildur", "brynhildr", "groth"
-		 0, 0, 0,         // "zeth", "koth", "gurth"
-		 0, 0, 0,         // "werewolf", "jackoknight", "dullahan"
-		 0, 0, 0,         // "spyke", "aoyuki", "gaiabyte"
-		 0, 0, 0, 0,      // "valor","rokka","pyromancer","bewat"
-		 0, 0, 0, 0,      // "nicte", "forestdruid","ignitor","undine"
-		 0, 0, 0          // "chroma", "petry", "zaytus"
-	};
 
 	// Flow Control Variables
 	bool debugInfo = true;                              // Set this to true if you want to see how far the execution is and how lone the execution took altogether
