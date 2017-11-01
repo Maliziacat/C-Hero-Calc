@@ -38,6 +38,13 @@ enum Element {
 	self
 }; // also used for hero skill targets
 
+enum Rarity {
+	follower  = 0,
+	common    = 0,
+	rare      = 1,
+	legendary = 2
+};
+
 // Defines Skills of Heros
 struct HeroSkill {
 	SkillType type;
@@ -55,9 +62,10 @@ class Monster {
 		bool isHero;
 		string name;
 		Element element;
+		Rarity rarity;
 		HeroSkill skill;
 
-		Monster(int hp, int damage, int cost, string name, Element element, HeroSkill skill = none);
+		Monster(int hp, int damage, int cost, string name, Element element, Rarity rarity = follower, HeroSkill skill = none);
 		Monster();
 };
 

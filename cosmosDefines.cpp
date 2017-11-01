@@ -45,13 +45,13 @@ void initializeUserHeroes(vector<int> levels) {
 }
 
 // Create a new hero with leveled stats and return it
-Monster getLeveledHero(const Monster & m, int rarity, int level) {
+Monster getLeveledHero(const Monster & m, int level) {
 	HeroSkill hallowSkill;
 	int points = level-1;
 
-	if (rarity == 1) {
+	if (m.rarity == 1) {
 		points = 2 * points;
-	} else if (rarity == 2) {
+	} else if (m.rarity == 2) {
 		points = 6 * points;
 	}
 
@@ -59,11 +59,11 @@ Monster getLeveledHero(const Monster & m, int rarity, int level) {
 	if (m.skill.type == hallow) {
 		hallowSkill.target = all;
 
-		if (rarity == 0) {
+		if (m.rarity == 0) {
 			hallowSkill.type = protect;
-		} else if (rarity == 1) {
+		} else if (m.rarity == 1) {
 			hallowSkill.type = buff;
-		} else if (rarity == 2) {
+		} else if (m.rarity == 2) {
 			hallowSkill.type = champion;
 		}
 
@@ -77,13 +77,14 @@ Monster getLeveledHero(const Monster & m, int rarity, int level) {
 		m.cost,
 		m.name + ":" + to_string(level),
 		m.element,
+		m.rarity,
 		m.skill.type == hallow ? hallowSkill : m.skill
 	);
 }
 
 // Add a leveled hero to the databse 
 int8_t addLeveledHero(Monster hero, int level) {
-	Monster m = getLeveledHero(hero, rarities.at(hero.name), level);
+	Monster m = getLeveledHero(hero, level);
 	monsterReference.emplace_back(m);
 
 	return (int8_t)(monsterReference.size()) - 1;

@@ -84,151 +84,77 @@ static vector<Monster> monsterBaseList { // Raw Monster Data, holds the actual O
 	Monster(234, 136, 5676000, "f15", fire)
 };
 static vector<Monster> baseHeroes { // Raw, unleveld Hero Data, holds actual Objects
-	Monster( 50, 12, 0, "james",             earth, {pAoe,    all, 1}),
+	Monster( 50, 12, 0, "james",             earth, legendary, {pAoe,    all, 1}),
 
-	Monster( 22, 14, 0, "hunter",            air,   {buff,    air, 2}),
-	Monster( 40, 20, 0, "shaman",            earth, {protect, earth , 2}),
-	Monster( 82, 22, 0, "alpha",             fire,  {aoe,     all, 1}),
+	Monster( 22, 14, 0, "hunter",            air,   common,    {buff,    air, 2}),
+	Monster( 40, 20, 0, "shaman",            earth, rare,      {protect, earth , 2}),
+	Monster( 82, 22, 0, "alpha",             fire,  legendary, {aoe,     all, 1}),
 
-	Monster( 28, 12, 0, "carl",              water, {buff,    water , 2}),
-	Monster( 38, 22, 0, "nimue",             air,   {protect, air, 2}),
-	Monster( 70, 26, 0, "athos",             earth, {protect, all, 2}),
+	Monster( 28, 12, 0, "carl",              water, common,    {buff,    water , 2}),
+	Monster( 38, 22, 0, "nimue",             air,   rare,      {protect, air, 2}),
+	Monster( 70, 26, 0, "athos",             earth, legendary, {protect, all, 2}),
 
-	Monster( 24, 16, 0, "jet",               fire,  {buff,    fire, 2}),
-	Monster( 36, 24, 0, "geron",             water, {protect, water, 2}),
-	Monster( 46, 40, 0, "rei",               air,   {buff,    all, 2}),
+	Monster( 24, 16, 0, "jet",               fire,  common,    {buff,    fire, 2}),
+	Monster( 36, 24, 0, "geron",             water, rare,      {protect, water, 2}),
+	Monster( 46, 40, 0, "rei",               air,   legendary, {buff,    all, 2}),
 
-	Monster( 19, 22, 0, "ailen",             earth, {buff,    earth, 2}),
-	Monster( 50, 18, 0, "faefyr",            fire,  {protect, fire, 2}),
-	Monster( 60, 32, 0, "auri",              water, {heal,    all, 2}),
+	Monster( 19, 22, 0, "ailen",             earth, common,    {buff,    earth, 2}),
+	Monster( 50, 18, 0, "faefyr",            fire,  rare,      {protect, fire, 2}),
+	Monster( 60, 32, 0, "auri",              water, legendary, {heal,    all, 2}),
 
-	Monster( 28, 16, 0, "k41ry",             air,   {buff,    air, 3}),
-	Monster( 46, 20, 0, "t4urus",            earth, {buff,    all, 1}),
-	Monster(100, 20, 0, "tr0n1x",            fire,  {aoe,     all, 3}),
+	Monster( 28, 16, 0, "k41ry",             air,   common,    {buff,    air, 3}),
+	Monster( 46, 20, 0, "t4urus",            earth, rare,      {buff,    all, 1}),
+	Monster(100, 20, 0, "tr0n1x",            fire,  legendary, {aoe,     all, 3}),
 
-	Monster( 58,  8, 0, "aquortis",          water, {buff,    water, 3}),
-	Monster( 30, 32, 0, "aeris",             air,   {heal,    all, 1}),
-	Monster( 75,  2, 0, "geum",              earth, {berserk, self, 2}),
+	Monster( 58,  8, 0, "aquortis",          water, common,    {buff,    water, 3}),
+	Monster( 30, 32, 0, "aeris",             air,   rare,      {heal,    all, 1}),
+	Monster( 75,  2, 0, "geum",              earth, legendary, {berserk, self, 2}),
 
-	Monster( 38, 12, 0, "rudean",            fire,  {buff,    fire, 3}),
-	Monster( 18, 50, 0, "aural",             water, {berserk, self, (float)1.2}),
-	Monster( 46, 46, 0, "geror",             air,   {friends, self, (float)1.2}),
+	Monster( 38, 12, 0, "rudean",            fire,  common,    {buff,    fire, 3}),
+	Monster( 18, 50, 0, "aural",             water, rare,      {berserk, self, (float)1.2}),
+	Monster( 46, 46, 0, "geror",             air,   legendary, {friends, self, (float)1.2}),
 
-	Monster( 30, 16, 0, "ourea",             earth, {buff,    earth, 3}),
-	Monster( 48, 20, 0, "erebus",            fire,  {champion,fire, 2}),
-	Monster( 62, 36, 0, "pontus",            water, {adapt,   self, 2}),
+	Monster( 30, 16, 0, "ourea",             earth, common,    {buff,    earth, 3}),
+	Monster( 48, 20, 0, "erebus",            fire,  rare,      {champion,fire, 2}),
+	Monster( 62, 36, 0, "pontus",            water, legendary, {adapt,   self, 2}),
 
-	Monster( 36, 14, 0, "oymos",             air,   {buff,    air, 4}),
-	Monster( 32, 32, 0, "xarth",             earth, {champion,earth, 2}),
-	Monster( 76, 32, 0, "atzar",             fire,  {adapt,   self, 2}),
+	Monster( 36, 14, 0, "oymos",             air,   common,    {buff,    air, 4}),
+	Monster( 32, 32, 0, "xarth",             earth, rare,      {champion,earth, 2}),
+	Monster( 76, 32, 0, "atzar",             fire,  legendary, {adapt,   self, 2}),
 
-	Monster( 45, 20, 0, "ladyoftwilight",    air,   {protect, all, 1}),
-	Monster( 70, 30, 0, "tiny",              earth, {aoe,     all, 2}),
-	Monster( 90, 40, 0, "nebra",             fire,  {buff,    all, 8}),
+	Monster( 45, 20, 0, "ladyoftwilight",    air,   common,    {protect, all, 1}),
+	Monster( 70, 30, 0, "tiny",              earth, rare,      {aoe,     all, 2}),
+	Monster( 90, 40, 0, "nebra",             fire,  legendary, {buff,    all, 8}),
 
-	Monster( 66, 44, 0, "veildur",           earth, {champion,all, 3}),
-	Monster( 72, 48, 0, "brynhildr",         air,   {champion,all, 4}),
-	Monster( 78, 52, 0, "groth",             fire,  {champion,all, 5}),
+	Monster( 66, 44, 0, "veildur",           earth, legendary, {champion,all, 3}),
+	Monster( 72, 48, 0, "brynhildr",         air,   legendary, {champion,all, 4}),
+	Monster( 78, 52, 0, "groth",             fire,  legendary, {champion,all, 5}),
 
-	Monster( 70, 42, 0, "zeth",              water, {revenge, all, (float)0.1}),
-	Monster( 76, 46, 0, "koth",              earth, {revenge, all, (float)0.15}),
-	Monster( 82, 50, 0, "gurth",             air,   {revenge, all, (float)0.2}),
+	Monster( 70, 42, 0, "zeth",              water, legendary, {revenge, all, (float)0.1}),
+	Monster( 76, 46, 0, "koth",              earth, legendary, {revenge, all, (float)0.15}),
+	Monster( 82, 50, 0, "gurth",             air,   legendary, {revenge, all, (float)0.2}),
 
-	Monster( 35, 25, 0, "werewolf",          earth, {hallow,  all, 0}),
-	Monster( 55, 35, 0, "jackoknight",       air,   {hallow,  all, 0}),
-	Monster( 75, 45, 0, "dullahan",          fire,  {hallow,  all, 0}),
+	Monster( 35, 25, 0, "werewolf",          earth, common,    {hallow,  all, 0}),
+	Monster( 55, 35, 0, "jackoknight",       air,   rare,      {hallow,  all, 0}),
+	Monster( 75, 45, 0, "dullahan",          fire,  legendary, {hallow,  all, 0}),
 
-	Monster( 75, 45, 0, "spyke",             air,   {training,self, 5}),
-	Monster( 70, 55, 0, "aoyuki",            water, {rainbow, self, 50}),
-	Monster( 50,100, 0, "gaiabyte",          earth, {wither,  self, (float)0.5}),
+	Monster( 75, 45, 0, "spyke",             air,   legendary, {training,self, 5}),
+	Monster( 70, 55, 0, "aoyuki",            water, legendary, {rainbow, self, 50}),
+	Monster( 50,100, 0, "gaiabyte",          earth, legendary, {wither,  self, (float)0.5}),
 
-	Monster( 20, 10, 0, "valor",             air,   {protect, air, 1}),
-	Monster( 30,  8, 0, "rokka",             earth, {protect, earth, 1}),
-	Monster( 24, 12, 0, "pyromancer",        fire,  {protect, fire, 1}),
-	Monster( 50,  6, 0, "bewat",             water, {protect, water, 1}),
+	Monster( 20, 10, 0, "valor",             air,   common,    {protect, air, 1}),
+	Monster( 30,  8, 0, "rokka",             earth, common,    {protect, earth, 1}),
+	Monster( 24, 12, 0, "pyromancer",        fire,  common,    {protect, fire, 1}),
+	Monster( 50,  6, 0, "bewat",             water, common,    {protect, water, 1}),
 
-	Monster( 22, 32, 0, "nicte",             air,   {buff,    air, 4}),
-	Monster( 46, 16, 0, "forestdruid",       earth, {buff,    earth, 4}),
-	Monster( 32, 24, 0, "ignitor",           fire,  {buff,    fire, 4}),
-	Monster( 58, 14, 0, "undine",            water, {buff,    water, 4}),
+	Monster( 22, 32, 0, "nicte",             air,   rare,      {buff,    air, 4}),
+	Monster( 46, 16, 0, "forestdruid",       earth, rare,      {buff,    earth, 4}),
+	Monster( 32, 24, 0, "ignitor",           fire,  rare,      {buff,    fire, 4}),
+	Monster( 58, 14, 0, "undine",            water, rare,      {buff,    water, 4}),
 
-	Monster( 52, 20, 0, "chroma",            air,   {protect, air, 4}),
-	Monster( 26, 44, 0, "petry",             earth, {protect, earth, 4}),
-	Monster( 58, 22, 0, "zaytus",            fire,  {protect, fire, 4}),
-};
-
-static map<string, int> rarities { // hero rarities
-	{"james", 2},  
-
-	{"hunter", 0},
-	{"shaman", 1},
-	{"alpha", 2},
-
-	{"carl", 0},
-	{"nimue", 1},
-	{"athos", 2},
-
-	{"jet", 0},
-	{"geron", 1},
-	{"rei", 2},
-
-	{"ailen", 0},
-	{"faefyr", 1},
-	{"auri", 2},
-
-	{"k41ry", 0},
-	{"t4urus", 1},
-	{"tr0n1x", 2},
-
-	{"aquortis", 0},
-	{"aeris", 1},
-	{"geum", 2},
-
-	{"rudean", 0},
-	{"aural", 1},
-	{"geror", 2},
-
-	{"ourea", 0},
-	{"erebus", 1},
-	{"pontus", 2},
-
-	{"oymos", 0},
-	{"xarth", 1},
-	{"atzar", 2},
-
-	{"ladyoftwilight", 0},
-	{"tiny", 1},
-	{"nebra", 2},
-
-	{"veildur", 2},
-	{"brynhildr", 2},
-	{"groth", 2},
-
-	{"zeth", 2},
-	{"koth", 2},
-	{"gurth", 2},
-
-	{"werewolf", 0},
-	{"jackoknight", 1},
-	{"dullahan", 2},
-
-	{"spyke", 2},
-	{"aoyuki", 2},
-	{"gaiabyte", 2},
-
-	{"valor", 0},
-	{"rokka", 0},
-	{"pyromancer", 0},
-	{"bewat", 0},
-
-	{"nicte",  1},
-	{"forestdruid", 1},
-	{"ignitor", 1},
-	{"undine",1},
-
-	{"chroma", 1},
-	{"petry", 1},
-	{"zaytus", 1}
+	Monster( 52, 20, 0, "chroma",            air,   rare,      {protect, air, 4}),
+	Monster( 26, 44, 0, "petry",             earth, rare,      {protect, earth, 4}),
+	Monster( 58, 22, 0, "zaytus",            fire,  rare,      {protect, fire, 4}),
 };
 
 static vector<vector<string>> quests { // Contains all quest lineups for easy referencing
@@ -303,6 +229,6 @@ void initializeUserHeroes(vector<int> levels);
 int8_t addLeveledHero(Monster hero, int level);
 
 // Create a new hero with leveled stats and return it
-Monster getLeveledHero(const Monster & m, int rarity, int level);
+Monster getLeveledHero(const Monster & m, int level);
 
 #endif

@@ -3,12 +3,13 @@
 
 vector<Monster> monsterReference {}; // Will be filled with leveled heroes if needed (determined by input)
 
-Monster::Monster(int hp, int damage, int cost, string name, Element element, HeroSkill skill) {
+Monster::Monster(int hp, int damage, int cost, string name, Element element, Rarity rarity, HeroSkill skill) {
 	this->hp = hp;
 	this->damage = damage;
 	this->cost = cost;
 	this->name = name;
 	this->element = element;
+	this->rarity = rarity;
 	this->skill = skill;
 
 	this->isHero = (skill.type != nothing);
