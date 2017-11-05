@@ -134,13 +134,13 @@ static vector<Monster> baseHeroes { // Raw, unleveld Hero Data, holds actual Obj
 	Monster( 76, 46, 0, "koth",              earth, legendary, {revenge, all, (float)0.15}),
 	Monster( 82, 50, 0, "gurth",             air,   legendary, {revenge, all, (float)0.2}),
 
-	Monster( 35, 25, 0, "werewolf",          earth, common,    {hallow,  all, 0}),
-	Monster( 55, 35, 0, "jackoknight",       air,   rare,      {hallow,  all, 0}),
-	Monster( 75, 45, 0, "dullahan",          fire,  legendary, {hallow,  all, 0}),
-
 	Monster( 75, 45, 0, "spyke",             air,   legendary, {training,self, 5}),
 	Monster( 70, 55, 0, "aoyuki",            water, legendary, {rainbow, self, 50}),
 	Monster( 50,100, 0, "gaiabyte",          earth, legendary, {wither,  self, (float)0.5}),
+
+	Monster( 35, 25, 0, "werewolf",          earth, common,    {hallow,  all, 0}),
+	Monster( 55, 35, 0, "jackoknight",       air,   rare,      {hallow,  all, 0}),
+	Monster( 75, 45, 0, "dullahan",          fire,  legendary, {hallow,  all, 0}),
 
 	Monster( 20, 10, 0, "valor",             air,   common,    {protect, air, 1}),
 	Monster( 30,  8, 0, "rokka",             earth, common,    {protect, earth, 1}),
