@@ -11,8 +11,8 @@
 
 using namespace std;
 
-const string heroVersion = "2.7.3";
-const string heroLevelFileName = "heroLevels" + heroVersion;
+const string heroVersion = "2.7.4";
+const string heroLevelFileName = "heroLevels" + heroVersion + ".txt";
 
 extern bool useConfigFile;
 extern ifstream configFile;
@@ -87,7 +87,7 @@ vector<int8_t> takeLineupInput(string promt);
 vector<int8_t> makeMonstersFromStrings(vector<string> stringLineup);
 
 // Parse hero input from a string into its name and level
-pair<Monster, int> parseHeroString(string heroString);
+pair<size_t, int> parseHeroString(string heroString);
 
 // Splits strings into a vector of strings. No need to optimize, only used for input.
 vector<string> split(string s, string to_split);

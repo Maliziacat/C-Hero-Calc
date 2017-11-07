@@ -90,8 +90,18 @@ vector<int> takeHerolevelInput() {
 			heroFile.open(heroLevelFileName, fstream::in);
 			heroFile >> input;
 			stringLevels = split(input, ",");
-			for (size_t i = 0; i < stringLevels.size(); i++) {
-				levels.push_back(stoi(stringLevels[i]));
+			for (size_t i = 0; i < baseHeroes.size(); i++) {
+				int level = 0;
+
+				for (size_t j = 0; j < stringLevels.size(); j++) {
+					pair<size_t, int> heroData = parseHeroString(stringLevels[j]);
+					if (heroData.first == i) {
+						level = heroData.second;
+						break;
+					}
+				}
+
+				levels.push_back(level);
 			}
 			heroFile.close();
 		} catch (const exception & e) {
@@ -106,12 +116,19 @@ vector<int> takeHerolevelInput() {
 			levels.push_back(stoi(input));
 		}
 
-		// Write Hero Levels to file to use next time
+		// Write nonzero Hero Levels to file to use next time
 		heroFile.open(heroLevelFileName, fstream::out);
-		for (size_t i = 0; i < levels.size()-1; i++) {
-			heroFile << levels[i] << ',';
+		bool fNeedComma = false;
+		for (size_t i = 0; i < levels.size(); i++) {
+			if (levels[i] == 0)
+				continue;
+
+			if (fNeedComma)
+				heroFile << ",";
+
+			heroFile << baseHeroes[i].name << ":" << levels[i];
+			fNeedComma = true;
 		}
-		heroFile << levels[levels.size()-1];
 		heroFile.close();
 		cout << "Hero Levels have been saved in a file. Next time you use this program you can load them from file." << endl;
 	}
@@ -144,12 +161,12 @@ vector<int8_t> takeLineupInput(string prompt) {
 // Parse string linup input into actual monsters if there are heroes in the input, a leveled hero is added to the database
 vector<int8_t> makeMonstersFromStrings(vector<string> stringLineup) {
 	vector<int8_t> lineup {};
-	pair<Monster, int> heroData;
+	pair<size_t, int> heroData;
 
 	for(size_t i = 0; i < stringLineup.size(); i++) {
 		if(stringLineup[i].find(":") != stringLineup[i].npos) {
 			heroData = parseHeroString(stringLineup[i]);
-			lineup.push_back(addLeveledHero(heroData.first, heroData.second));
+			lineup.push_back(addLeveledHero(baseHeroes[heroData.first], heroData.second));
 		} else {
 			lineup.push_back(monsterMap.at(stringLineup[i]));
 		}
@@ -157,17 +174,19 @@ vector<int8_t> makeMonstersFromStrings(vector<string> stringLineup) {
 	return lineup;
 }
 
-// Parse hero input from a string into its name and level
-pair<Monster, int> parseHeroString(string heroString) {
+// Parse hero input from a string into its baseHeroes index and level
+pair<size_t, int> parseHeroString(string heroString) {
 	string name = heroString.substr(0, heroString.find(':'));
-	Monster hero;
-	for (size_t i = 0; i < baseHeroes.size(); i++) {
+	size_t i = 0;
+
+	for (i = 0; i < baseHeroes.size(); i++) {
 		if (baseHeroes[i].name == name) {
-			hero = baseHeroes[i];
+			break;
 		}
 	}
+
 	int level = stoi(heroString.substr(heroString.find(':')+1));
-	return pair<Monster, int>(hero, level);
+	return pair<size_t, int>(i, level);
 }
 
 // Splits strings into a vector of strings. No need to optimize, only used for input.
