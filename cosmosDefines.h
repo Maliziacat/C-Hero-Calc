@@ -138,9 +138,9 @@ static vector<Monster> baseHeroes { // Raw, unleveld Hero Data, holds actual Obj
 	Monster( 70, 55, 0, "aoyuki",            water, legendary, {rainbow, self, 50}),
 	Monster( 50,100, 0, "gaiabyte",          earth, legendary, {wither,  self, (float)0.5}),
 
-	Monster( 35, 25, 0, "werewolf",          earth, common,    {hallow,  all, 0}),
-	Monster( 55, 35, 0, "jackoknight",       air,   rare,      {hallow,  all, 0}),
-	Monster( 75, 45, 0, "dullahan",          fire,  legendary, {hallow,  all, 0}),
+	Monster( 35, 25, 0, "werewolf",          earth, common,    {prot_l,  all, 1}),
+	Monster( 55, 35, 0, "jackoknight",       air,   rare,      {buff_l,  all, 1}),
+	Monster( 75, 45, 0, "dullahan",          fire,  legendary, {champ_l, all, 1}),
 
 	Monster( 20, 10, 0, "valor",             air,   common,    {protect, air, 1}),
 	Monster( 30,  8, 0, "rokka",             earth, common,    {protect, earth, 1}),
@@ -156,6 +156,16 @@ static vector<Monster> baseHeroes { // Raw, unleveld Hero Data, holds actual Obj
 	Monster( 26, 44, 0, "petry",             earth, rare,      {protect, earth, 4}),
 	Monster( 58, 22, 0, "zaytus",            fire,  rare,      {protect, fire, 4}),
 	Monster( 36, 36, 0, "ladyodelith",       water, rare,      {protect, water, 4}),
+
+	Monster( 52, 20, 0, "chroma",            air,   rare,      {protect, air, 4}),
+	Monster( 26, 44, 0, "petry",             earth, rare,      {protect, earth, 4}),
+	Monster( 58, 22, 0, "zaytus",            fire,  rare,      {protect, fire, 4}),
+	Monster( 36, 36, 0, "ladyodelith",       water, rare,      {protect, water, 4}),
+
+	Monster( 34, 54, 0, "shygu",             air,   legendary, {prot_l,  air, 1}),
+	Monster( 72, 28, 0, "thert",             earth, legendary, {prot_l,  earth, 1}),
+	Monster( 32, 64, 0, "lordkirk",          fire,  legendary, {prot_l,  fire, 1}),
+	Monster( 30, 70, 0, "neptunius",         water, legendary, {prot_l,  water, 1}),
 };
 
 static vector<vector<string>> quests { // Contains all quest lineups for easy referencing

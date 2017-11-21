@@ -26,7 +26,9 @@ enum SkillType {
 	rainbow,
 	wither,
 	revenge,
-	hallow
+	buff_l,
+	prot_l,
+	champ_l
 };
 
 enum Element {

@@ -44,9 +44,13 @@ void initializeUserHeroes(vector<int> levels) {
 	}
 }
 
+bool isLeveledSkill(SkillType type) {
+	return (type == prot_l || type == buff_l || type == champ_l);
+}
+
 // Create a new hero with leveled stats and return it
 Monster getLeveledHero(const Monster & m, int level) {
-	HeroSkill hallowSkill;
+	HeroSkill baseSkill;
 	int points = level-1;
 
 	if (m.rarity == 1) {
@@ -55,19 +59,19 @@ Monster getLeveledHero(const Monster & m, int level) {
 		points = 6 * points;
 	}
 
-	// replace hallow skill with actual skill
-	if (m.skill.type == hallow) {
-		hallowSkill.target = all;
+	// replace level-scaling skills with base skill
+	if (isLeveledSkill(m.skill.type)) {
+		baseSkill.target = m.skill.target;
 
-		if (m.rarity == 0) {
-			hallowSkill.type = protect;
-		} else if (m.rarity == 1) {
-			hallowSkill.type = buff;
-		} else if (m.rarity == 2) {
-			hallowSkill.type = champion;
+		if (m.skill.type == prot_l) {
+			baseSkill.type = protect;
+		} else if (m.skill.type == buff_l) {
+			baseSkill.type = buff;
+		} else if (m.skill.type == champ_l) {
+			baseSkill.type = champion;
 		}
 
-		hallowSkill.amount = (float)floor(level / 9);
+		baseSkill.amount = (float)floor(level / 9) * m.skill.amount;
 	}
 
 	int value = m.hp + m.damage;
@@ -78,7 +82,7 @@ Monster getLeveledHero(const Monster & m, int level) {
 		m.name + ":" + to_string(level),
 		m.element,
 		m.rarity,
-		m.skill.type == hallow ? hallowSkill : m.skill
+		isLeveledSkill(m.skill.type) ? baseSkill : m.skill
 	);
 }
 
