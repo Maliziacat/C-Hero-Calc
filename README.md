@@ -20,16 +20,16 @@ Be sure to include your hero levels, the lineup you're fighting against, and a b
 * Precompiled exe included for x64 Windows 10
 
 ### What's Different from Diceycle's calc?
-* No option to specify minimum follower cost, or maximum follower amount.
 * Calculator will attempt to replace single hero in an "optimal" lineup to try to improve the solution.  Mostly useful for the "greedy" solutions.
 * Calculator should run faster than Diceycle's calc, except if you're good at estimating minimum follower cost.
-* Calculator doesn't stop early if finding a 0-follower solution.  That needs fixing.
 * Hero input files are different.
 * No JSON battle lineup you can paste into the game.
+* No option to specify minimum follower cost, or maximum follower amount.
+* No option to calculate multiple lineups at once.
 
 ## Usage
 For most people, only downloading the exe and running it will be enough. For those who are not on Windows they will need to download all files and compile for themselves.
-Saved hero files will look like "heroLevels<version>.txt", e.g. "heroLevels2.7.4.txt" .  Creating / editing the file should be simple: heroes should be comma separated, with no spaces or returns.  Heroes are listed with the format "<heroname>:<level>", as you would input for an enemy lineup, like "jackolantern:15".  The hero ordering does not matter.
+Saved hero files will look like "heroLevels.txt".  Creating / editing the file should be simple: heroes should be comma separated, with no spaces or returns.  Heroes are listed with the format "<heroname>:<level>", as you would input for an enemy lineup, like "jackolantern:15".  The hero ordering does not matter.
 
 ### Compiling
 I compile using Visual C++, available with Visual Studio 2017.  There is a free edition available for Windows [here](https://www.visualstudio.com/downloads/).

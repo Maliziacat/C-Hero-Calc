@@ -11,13 +11,13 @@
 
 using namespace std;
 
-const string heroVersion = "2.7.4";
-const string heroLevelFileName = "heroLevels" + heroVersion + ".txt";
+const string heroVersion = "2.7.6";
+const string heroLevelFileName = "heroLevels.txt";
 
 extern bool useConfigFile;
 extern ifstream configFile;
 
-const string welcomeMessage = "Welcome to Malizia's PvE Instance Solver!";
+const string welcomeMessage = "Welcome to Malizia's v" + heroVersion + " PvE Instance Solver!";
 const string helpMessage = "If you don't know what to do you can type help at any time to get an explanation about the current step.";
 
 enum QueryType {question, integer, raw};

@@ -33,8 +33,12 @@ void seedMoreArmies();
 // Simulates fights with all armies against the target. armies will contain armies with the results written in.
 void simulateMultipleFights(vector<Army> & armies) {
 	bool newFound = false;
+	size_t armySize = armies.size();
 
-	for (size_t i = 0; i < armies.size(); i++) {
+	for (size_t i = 0; i < armySize; i++) {
+		if (followerUpperBound == 0)
+			break;
+
 		simulateFight(armies[i], targetArmy);
 		if (!armies[i].lastFightData.rightWon) {  // left (our side) wins:
 			if (armies[i].followerCost < followerUpperBound) {
@@ -390,6 +394,9 @@ time_t solveInstance(bool debugInfo) {
 		debugOutput(tempTime, "  Simulating " + to_string(heroMonsterArmiesSize) + " hero Fights... ", debugInfo, true, false);
 		tempTime = time(NULL);
 		simulateMultipleFights(heroMonsterArmies);
+
+		if (followerUpperBound == 0)
+			break;
 
 		if (armySize < maxMonstersAllowed) { 
 			// Sort the results by follower cost for some optimization
