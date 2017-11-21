@@ -58,8 +58,8 @@ static HeroSkill none = HeroSkill({nothing, air, 1}); // base skill used for nor
 // Defines a Monster or Hero
 class Monster {
 	public :
-		int hp;
 		int damage;
+		int hp;
 		int cost;
 		bool isHero;
 		string name;
@@ -67,7 +67,7 @@ class Monster {
 		Rarity rarity;
 		HeroSkill skill;
 
-		Monster(int hp, int damage, int cost, string name, Element element, Rarity rarity = follower, HeroSkill skill = none);
+		Monster(int damage, int hp, int cost, string name, Element element, Rarity rarity = follower, HeroSkill skill = none);
 		Monster();
 };
 
