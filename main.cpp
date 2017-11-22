@@ -528,7 +528,7 @@ int main(int argc, char** argv) {
 
 			} else {
 				// Print the winning combination!
-				cout << endl << "For ";
+				cout << endl << endl << endl << "For ";
 				if (questNumber != 0)
 					cout << "Quest " << questNumber << ": ";
 				targetArmy.print(false /*reverse*/);
