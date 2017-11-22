@@ -81,7 +81,7 @@ void debugOutput(time_t timeStamp, string message, bool shouldOutput, bool finis
 vector<int> takeHerolevelInput();
 
 // Promt the user via command Line to input a monster lineup and return them as a vector of pointers to those monster
-vector<int8_t> takeLineupInput(string promt);
+vector<int8_t> takeLineupInput(string prompt, int &questNumber);
 
 // Parse string linup input into actual monsters if there are heroes in the input, a leveled hero is added to the database
 vector<int8_t> makeMonstersFromStrings(vector<string> stringLineup);

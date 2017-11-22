@@ -136,7 +136,7 @@ vector<int> takeHerolevelInput() {
 }
 
 // Promt the user via command Line to input a monster lineup and return them as a vector of pointers to those monster
-vector<int8_t> takeLineupInput(string prompt) {
+vector<int8_t> takeLineupInput(string prompt, int &questNumber) {
 	vector<int8_t> lineup {};
 	string questString = "quest";
 
@@ -146,7 +146,7 @@ vector<int8_t> takeLineupInput(string prompt) {
 		input = getResistantInput(prompt, lineupInputHelp, raw);
 		try {
 			if (input.compare(0, questString.length(), questString) == 0) {
-				int questNumber = stoi(input.substr(questString.length(), 2));
+				questNumber = stoi(input.substr(questString.length(), 2));
 				lineup = makeMonstersFromStrings(quests[questNumber]);
 				return lineup;
 			} else {

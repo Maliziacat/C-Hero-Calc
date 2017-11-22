@@ -48,7 +48,7 @@ void simulateMultipleFights(vector<Army> & armies) {
 				newFound = true;
 				followerUpperBound = armies[i].followerCost;
 				best = armies[i];
-				debugOutput(time(NULL), "  " + best.toString(), true, false, true);
+				debugOutput(time(NULL), "  " + best.toString(true /*reverse*/), true, false, true);
 			}
 		}
 	}
@@ -145,7 +145,7 @@ void getQuickSolutions(Army target, size_t limit) {
 		}
 		if (!invalid) {
 			cout << "  ";
-			tempArmy.print();
+			tempArmy.print(true /*reverse*/);
 			best = tempArmy;
 			if (followerUpperBound > tempArmy.followerCost) {
 				followerUpperBound = tempArmy.followerCost;
@@ -167,7 +167,7 @@ void getQuickSolutions(Army target, size_t limit) {
 			}
 			cout << "  ";
 			tempArmy = Army(greedyHeroes);
-			tempArmy.print();
+			tempArmy.print(true /*reverse*/);
 			best = tempArmy;
 			if (followerUpperBound > tempArmy.followerCost) {
 				followerUpperBound = tempArmy.followerCost;
@@ -495,7 +495,8 @@ int main(int argc, char** argv) {
 
 		// Collect the Data via Command Line if the user wants
 		yourHeroLevels = takeHerolevelInput();
-		targetArmy = takeLineupInput("Enter Enemy Lineup: ");
+		int questNumber = 0;
+		targetArmy = takeLineupInput("Enter Enemy Lineup: ", questNumber);
 		targetArmySize = targetArmy.monsterAmount;
 		maxMonstersAllowed = stoi(getResistantInput("Enter how many monsters are allowed in the solution: ", maxMonstersAllowedHelp, integer));
 		followerUpperBound = -1;
@@ -517,7 +518,7 @@ int main(int argc, char** argv) {
 			best.lastFightData.valid = false;
 			simulateFight(best, targetArmy);
 			if (best.lastFightData.rightWon) {
-				best.print();
+				best.print(true /*reverse*/);
 				cout << "This does not beat the lineup!!!" << endl;
 				for (int i = 1; i <= 10; i++) {
 					cout << "ERROR";
@@ -527,8 +528,12 @@ int main(int argc, char** argv) {
 
 			} else {
 				// Print the winning combination!
-				cout << endl << "The winning combination is:" << endl << "  ";
-				best.print();
+				cout << endl << "For ";
+				if (questNumber != 0)
+					cout << "Quest " << questNumber << ": ";
+				targetArmy.print(false /*reverse*/);
+				cout << "The winning combination is:" << endl << "  ";
+				best.print(true /*reverse*/);
 				cout << "  (Right-most fights first)" << endl;
 			}
 		} else {
