@@ -130,6 +130,10 @@ static vector<Monster> baseHeroes { // Raw, unleveld Hero Data, holds actual Obj
 	Monster( 48,  72, 0, "brynhildr",         air,   legendary, {champion,all, 4}),
 	Monster( 52,  78, 0, "groth",             fire,  legendary, {champion,all, 5}),
 
+	Monster( 12,  60, 0, "sigrun",            fire,  legendary, {ricochet,all, (float)0.5}),
+	Monster( 14,  70, 0, "koldis",            water, legendary, {ricochet,all, (float)0.5}),
+	Monster( 16,  75, 0, "alvitr",            earth, legendary, {ricochet,all, (float)0.5}),
+
 	Monster( 42,  70, 0, "zeth",              water, legendary, {revenge, all, (float)0.1}),
 	Monster( 46,  76, 0, "koth",              earth, legendary, {revenge, all, (float)0.15}),
 	Monster( 50,  82, 0, "gurth",             air,   legendary, {revenge, all, (float)0.2}),

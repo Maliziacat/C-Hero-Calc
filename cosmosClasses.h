@@ -28,7 +28,8 @@ enum SkillType {
 	revenge,
 	buff_l,
 	prot_l,
-	champ_l
+	champ_l,
+	ricochet
 };
 
 enum Element {
