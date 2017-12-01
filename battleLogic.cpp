@@ -86,6 +86,8 @@ void FightData::LoadHeroInfluences() {
 				aoeDamage += (int)(skillAmount[i]);
 			} else if (skillType[i] == pAoe && i == lost) {
 				paoeDamage += currentMonster->damage;
+			} else if (skillType[i] == ricochet && i == lost) {
+				paoeDamage += (int)(currentMonster->damage * skillAmount[i]);
 			}
 		}
 	}

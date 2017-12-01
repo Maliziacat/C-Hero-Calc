@@ -75,7 +75,7 @@ class Monster {
 // Function for sorting Monsters by cost (ascending)
 bool isCheaper(const Monster & a, const Monster & b);
 
-// Defines the results of a fight between two armies; monstersLost and damage desribe the condition of the winning side
+// Defines the results of a fight between two armies; monstersLost and damage describe the condition of the winning side
 class FightResult {
 	public :
 		unsigned int leftAoeDamage  : 16; // how much aoe damage left took
