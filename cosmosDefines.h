@@ -122,6 +122,10 @@ static vector<Monster> baseHeroes { // Raw, unleveld Hero Data, holds actual Obj
 	Monster( 32,  32, 0, "xarth",             earth, rare,      {champion,earth, 2}),
 	Monster( 32,  76, 0, "atzar",             fire,  legendary, {adapt,   self, 2}),
 
+	Monster( 18,  30, 0, "hama",              water, common,    {buff,    water, 4}),
+	Monster( 34,  34, 0, "hallinskidi",       air,   rare,      {champion,air, 2}),
+	Monster( 42,  60, 0, "rigr",              earth, legendary, {adapt,   self, 2}),
+
 	Monster( 20,  45, 0, "ladyoftwilight",    air,   common,    {protect, all, 1}),
 	Monster( 30,  70, 0, "tiny",              earth, rare,      {aoe,     all, 2}),
 	Monster( 40,  90, 0, "nebra",             fire,  legendary, {buff,    all, 8}),
