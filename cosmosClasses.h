@@ -107,8 +107,8 @@ class Army {
 
 		void add(int8_t m);
 		void replace(int i, int8_t m);
-		string toString(bool reverse);
-		void print(bool reverse);
+		string toString(bool reverse, bool verbose = false);
+		void print(bool reverse, bool verbose = false);
 		Army(vector<int8_t> monsters = {});
 };
 

@@ -516,7 +516,7 @@ int main(int argc, char** argv) {
 		// Last check to see if winning combination wins:
 		if ((customFollowers && best.monsterAmount > 0) || (!customFollowers && followerUpperBound < numeric_limits<int>::max())) {
 			best.lastFightData.valid = false;
-			simulateFight(best, targetArmy);
+			simulateFight(best, targetArmy, false /*verbose*/);
 			if (best.lastFightData.rightWon) {
 				best.print(true /*reverse*/);
 				cout << "This does not beat the lineup!!!" << endl;

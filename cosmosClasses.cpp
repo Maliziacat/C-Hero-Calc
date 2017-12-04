@@ -79,18 +79,23 @@ void Army::replace(int i, int8_t m) {
 	this->followerCost += monsterReference[m].cost;
 }
 
-string Army::toString(bool reverse) {
+string Army::toString(bool reverse, bool verbose) {
 	stringstream s;
 	s << "(Followers: " << setw(7) << this->followerCost << " | ";
 	for (int i = 0; i < this->monsterAmount; i++) {
 		int j = reverse ? j = (this->monsterAmount - 1) - i : i;
+		if (verbose)
+			s << "(" << i+1 << ") ";
 		s << monsterReference[this->monsters[j]].name << " ";
-	} s << ")"; 
+		if (verbose)
+			s << "(" << monsterReference[this->monsters[j]].damage << "/" << monsterReference[this->monsters[j]].hp << ")" << endl << "                      ";
+	}
+	s << ")"; 
 	return s.str();
 }
 
-void Army::print(bool reverse) {
-	cout << this->toString(reverse) << endl;
+void Army::print(bool reverse, bool verbose) {
+	cout << this->toString(reverse, verbose) << endl;
 }
 
 // Function for sorting FightResults by followers (ascending)

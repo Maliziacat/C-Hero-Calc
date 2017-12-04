@@ -222,6 +222,14 @@ void simulateFight(Army & left, Army & right, bool verbose) {
 	FightData rightData(right);
 	int turncounter = 0;
 
+	if (verbose) {
+		cout << endl << endl << "Left: " << endl;
+		left.print(false /*reverse*/, true /*verbose*/);
+		cout << endl << "Right: " << endl;
+		right.print(false /*reverse*/, true /*verbose*/);
+		cout << endl;
+	}
+
 	// If no heroes are in the army the result from the smaller army is still valid
 	if (left.lastFightData.valid && !verbose) { 
 		// Set pre-computed values to pick up where we left off
@@ -266,9 +274,11 @@ void simulateFight(Army & left, Army & right, bool verbose) {
 
 		// Output detailed fight Data for debugging
 		if (verbose) {
-			cout << "Turn " << setw(2) << turncounter << ": ";
-			cout << "Left monster: " << (int)leftData.lost << "  damage taken: " << setw(3) << leftData.frontDamageTaken << "  aoe taken: " << setw(3) << leftData.cumAoeDamageTaken;
-			cout << "  Right monster: " << (int)rightData.lost << "  damage taken: " << setw(3) << rightData.frontDamageTaken << "  aoe taken: " << setw(3) << rightData.cumAoeDamageTaken << endl;
+			Monster *leftMonster = &monsterReference[leftData.lineup[leftData.lost]];
+			Monster *rightMonster = &monsterReference[rightData.lineup[rightData.lost]];
+			cout << "End of Turn " << setw(2) << turncounter << ": ";
+			cout << "Left monster (" << (int)leftData.lost + 1 << "): " << leftMonster->name << "  damage taken: " << setw(3) << leftData.frontDamageTaken << "  aoe taken: " << setw(3) << leftData.cumAoeDamageTaken;
+			cout << "  Right monster (" << (int)rightData.lost + 1 << "): " << rightMonster->name << "  damage taken: " << setw(3) << rightData.frontDamageTaken << "  aoe taken: " << setw(3) << rightData.cumAoeDamageTaken << endl;
 		}
 	}
 
