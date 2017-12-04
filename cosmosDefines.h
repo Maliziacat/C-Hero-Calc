@@ -267,7 +267,7 @@ static vector<vector<string>> quests { // Contains all quest lineups for easy re
 	{"w14", "a15", "w14", "e15", "a15", "w14"},
 	{"w15", "w15", "w15", "w15", "f15", "f15"},
 	{"a15", "a15", "a15", "a15", "a15", "w14"},
-	{"w15", "w15", "w15", "w15", "w15", "f15"}, //80
+	{"f15", "w15", "w15", "w15", "w15", "w15"}, //80
 };
 
 // Make sure all the values are set
