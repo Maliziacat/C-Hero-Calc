@@ -109,6 +109,7 @@ class Army {
 		void replace(int i, int8_t m);
 		string toString(bool reverse, bool verbose = false);
 		void print(bool reverse, bool verbose = false);
+		int32_t avgFollowerCost();
 		Army(vector<int8_t> monsters = {});
 };
 

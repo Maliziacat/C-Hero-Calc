@@ -472,7 +472,7 @@ int main(int argc, char** argv) {
 	// Define User Input Data
 	firstDominance = 4;             // Set this to control at which army length dominance should first be calculated. Treat with extreme caution. Not using dominance at all WILL use more RAM than you have
 	maxMonstersAllowed = 6;         // Set this to how many Monsters should be in the solution (f.e 4 for X-3 Quests) 
-	minimumMonsterCost = 0;    // Minimum amount a monster used in the soluiton should cost. Useful for reducing the amount of monsters when you are sure you wont need them (f.e. a1 in dq20)
+	minimumMonsterCost = 0;    // Minimum amount a monster used in the solution should cost. Useful for reducing the amount of monsters when you are sure you wont need them (f.e. a1 in dq20)
 	followerUpperBound = -1;        // Maximum Cost of the whole Lineup, -1 means unlimited
 
 	// Flow Control Variables
@@ -511,6 +511,9 @@ int main(int argc, char** argv) {
 		} else {
 			customFollowers = true;
 		}
+
+		minimumMonsterCost = (int)(targetArmy.avgFollowerCost() / 10);
+		cout << "Setting a minimum monster cost of " << minimumMonsterCost << "." << endl;
 
 		filterMonsterData(minimumMonsterCost);
 		initializeUserHeroes(yourHeroLevels);

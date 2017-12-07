@@ -98,6 +98,18 @@ void Army::print(bool reverse, bool verbose) {
 	cout << this->toString(reverse, verbose) << endl;
 }
 
+int32_t Army::avgFollowerCost() {
+	int8_t monsterCount = 0;
+
+	for (int i = 0; i < this->monsterAmount; i++) {
+		if (baseMonsterSize - this->monsters[i] > 0)
+			++monsterCount;
+	}
+
+	//cout << "There are " << (int)monsterCount << " nonheroes in this lineup." << endl;
+	return (int32_t)(this->followerCost / monsterCount);
+}
+
 // Function for sorting FightResults by followers (ascending)
 bool hasFewerFollowers(const Army & a, const Army & b) {
 	return (a.followerCost < b.followerCost);
