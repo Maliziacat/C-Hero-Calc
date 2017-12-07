@@ -499,6 +499,9 @@ int main(int argc, char** argv) {
 		targetArmy = takeLineupInput("Enter Enemy Lineup: ", questNumber);
 		targetArmySize = targetArmy.monsterAmount;
 		maxMonstersAllowed = stoi(getResistantInput("Enter how many monsters are allowed in the solution: ", maxMonstersAllowedHelp, integer));
+		if (maxMonstersAllowed > 6)
+			maxMonstersAllowed = 6;
+
 		followerUpperBound = -1;
 
 		// Set Upper Bound Correctly
