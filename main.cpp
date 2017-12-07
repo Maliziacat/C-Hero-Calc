@@ -512,7 +512,11 @@ int main(int argc, char** argv) {
 			customFollowers = true;
 		}
 
+		// try to reduce number of monsters checked.
+		// if we're not excluding at least tier 5's, don't bother.
 		minimumMonsterCost = (int)(targetArmy.avgFollowerCost() / 10);
+		if (minimumMonsterCost < 55000)
+			minimumMonsterCost = 0;
 		cout << "Setting a minimum monster cost of " << minimumMonsterCost << "." << endl;
 
 		filterMonsterData(minimumMonsterCost);
