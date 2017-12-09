@@ -148,7 +148,7 @@ void FightData::CalcDamage(Element enemyElement, int enemyProtection, int turnco
 	// Handle Elemental advantage
 	elementalDifference = (currentMonster->element - enemyElement);
 	if (elementalDifference == -1 || elementalDifference == 3) {
-		damage = (int)(damage * elementalBoost);
+		damage = (int)(damage * elementalBoost + 0.5);
 	}
 
 	// Handle Protection
