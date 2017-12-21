@@ -64,7 +64,8 @@ void FightData::LoadHeroInfluences() {
 					aoeDamage += (int)(currentMonster->damage * skillAmount[lost] + 0.5);
 				}
 				OnCurrentMonsterDeath();
-				currentMonster = &monsterReference[lineup[lost]];
+				if (!HasLost())
+					currentMonster = &monsterReference[lineup[lost]];
 			}
 		} else {
 			// track elements of monsters before current monster
@@ -87,7 +88,7 @@ void FightData::LoadHeroInfluences() {
 			} else if (skillType[i] == pAoe && i == lost) {
 				paoeDamage += currentMonster->damage;
 			} else if (skillType[i] == ricochet && i == lost) {
-				paoeDamage += (int)(currentMonster->damage * skillAmount[i]);
+				paoeDamage += (int)(round(currentMonster->damage * skillAmount[i]));
 			}
 		}
 	}
@@ -186,10 +187,14 @@ void FightData::ApplyRevengeDamage(int revengeDamage) {
 	frontDamageTaken += revengeDamage;
 	cumAoeDamageTaken += revengeDamage;
 
+	// current monster died from ApplyDamage step
+	if (frontDamageTaken == cumAoeDamageTaken)
+		return;
+
 	if (currentMonster->hp <= frontDamageTaken) {
 		OnCurrentMonsterDeath();
 		frontDamageTaken = cumAoeDamageTaken;
-	} else if (skillType[lost] == wither && frontDamageTaken != cumAoeDamageTaken) {
+	} else if (skillType[lost] == wither) {
 		// wither damage happens after AoE damage,
 		// so probably happens after revenge damage
 		int remainingHealth = currentMonster->hp - frontDamageTaken;
@@ -274,8 +279,8 @@ void simulateFight(Army & left, Army & right, bool verbose) {
 
 		// Output detailed fight Data for debugging
 		if (verbose) {
-			Monster *leftMonster = &monsterReference[leftData.lineup[leftData.lost]];
-			Monster *rightMonster = &monsterReference[rightData.lineup[rightData.lost]];
+			Monster *leftMonster = &monsterReference[leftData.HasLost() ? 0 : leftData.lineup[leftData.lost]];
+			Monster *rightMonster = &monsterReference[rightData.HasLost() ? 0 : rightData.lineup[rightData.lost]];
 			cout << "End of Turn " << setw(2) << turncounter << ": ";
 			cout << "Left monster (" << (int)leftData.lost + 1 << "): " << leftMonster->name << "  damage taken: " << setw(3) << leftData.frontDamageTaken << "  aoe taken: " << setw(3) << leftData.cumAoeDamageTaken;
 			cout << "  Right monster (" << (int)rightData.lost + 1 << "): " << rightMonster->name << "  damage taken: " << setw(3) << rightData.frontDamageTaken << "  aoe taken: " << setw(3) << rightData.cumAoeDamageTaken << endl;
