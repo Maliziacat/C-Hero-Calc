@@ -77,18 +77,6 @@ HeroSkill::HeroSkill(SkillType aType, Element aTarget, Element aSource, float an
                                   aType == LIFESTEAL || aType == LIFESTEAL_L);
 }
 
-std::string Monster::toJSON() {
-    std::stringstream s;
-    s << "{";
-        s << "\"id\""  << ":" << getRealIndex(*this);
-        if (this->rarity != NO_HERO) {
-            s << ",";
-            s << "\"level\""  << ":" << this->level;
-        }
-    s << "}";
-    return s.str();
-}
-
 std::string Army::toString() {
     std::stringstream s;
     s << "[";
@@ -101,25 +89,6 @@ std::string Army::toString() {
     for (int i = this->monsterAmount-1; i >= 0; i--) {
         s << monsterReference[this->monsters[i]].name << " "; // Print in reversed Order
     } s << "<==]"; 
-    return s.str();
-}
-
-std::string Army::toJSON() {
-    if (this->isEmpty()) {return "null";}
-    
-    std::stringstream s;
-    s << "{";
-        s << "\"followers\"" << ":" << this->followerCost << ",";
-        s << "\"monsters\"" << ":";
-        s << "[";
-        for (int i = this->monsterAmount-1; i >= 0; i--) {
-            s << monsterReference[this->monsters[i]].toJSON();
-            if (i > 0) {
-                s << ",";
-            }
-        }
-        s << "]";
-    s << "}";
     return s.str();
 }
 

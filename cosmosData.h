@@ -109,8 +109,6 @@ class Monster {
         Monster(int hp, int damage, std::string name, Element element, HeroRarity rarity, HeroSkill skill);
         Monster(const Monster & baseHero, int level);
         Monster() {};
-        
-        std::string toJSON();
 };
 
 // Access tools for monsters 
@@ -189,7 +187,6 @@ class Army {
         }
         
         std::string toString();
-        std::string toJSON();
 };
 
 // Function for sorting FightResults by followers (ascending)

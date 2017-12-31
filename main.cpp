@@ -382,11 +382,7 @@ void outputSolution(Instance instance, bool replayStrings) {
     sane = !instance.hasWorldBoss && (!instance.bestSolution.lastFightData.rightWon || instance.bestSolution.isEmpty());
     sane |= instance.hasWorldBoss && instance.bestSolution.lastFightData.frontHealth == instance.lowestBossHealth;
     
-    if (iomanager.outputLevel == SERVER_OUTPUT) {
-        iomanager.outputMessage(instance.toJSON(sane), SERVER_OUTPUT);
-    } else {
-        iomanager.outputMessage(instance.toString(sane, replayStrings), CMD_OUTPUT);
-    }
+    iomanager.outputMessage(instance.toString(sane, replayStrings), CMD_OUTPUT);
 }
 
 int main(int argc, char** argv) {

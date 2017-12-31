@@ -10,7 +10,6 @@
 #include <stdexcept>
 
 #include "cosmosData.h"
-#include "base64.h"
 
 const std::string VERSION = "2.9.1.6";
 
@@ -60,7 +59,6 @@ struct Instance {
     
     void setTarget(Army aTarget);
     std::string toString(bool valid, bool showReplayString = true);
-    std::string toJSON(bool valid);
 };
 
 // TODO: Detect double hero inputs
@@ -119,7 +117,6 @@ Army makeArmyFromStrings(std::vector<std::string> stringMonsters);
 std::pair<Monster, int> parseHeroString(std::string heroString);
 
 // Functions for making a valid ingame replay string
-std::string makeBattleReplay(Army friendly, Army hostile);
 std::string getReplaySetup(Army setup);
 std::string getReplayHeroes(Army setup);
 

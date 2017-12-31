@@ -124,7 +124,7 @@ string IOManager::getResistantInput(string query, QueryType queryType) {
             try {
                 stoi(firstToken);
                 return firstToken;
-            } catch (const exception & e) {
+            } catch (...) {
                 this->handleInputException(NUMBER_PARSE);
             }
         }
@@ -321,24 +321,6 @@ pair<Monster, int> parseHeroString(string heroString) {
     throw HERO_PARSE;
 }
 
-// Create valid string to be used ingame to view the battle between armies friendly and hostile
-string makeBattleReplay(Army friendly, Army hostile) {
-    stringstream replay;
-    replay << "{";
-        replay << "\"winner\""  << ":" << "\"Unknown\"" << ",";
-        replay << "\"left\""    << ":" << "\"Solution\"" << ",";
-        replay << "\"right\""   << ":" << "\"Instance\"" << ",";
-        replay << "\"date\""    << ":" << time(NULL) << ",";
-        replay << "\"title\""   << ":" << "\"Proposed Solution\"" << ",";
-        replay << "\"setup\""   << ":" << getReplaySetup(friendly) << ",";
-        replay << "\"shero\""   << ":" << getReplayHeroes(friendly) << ",";
-        replay << "\"player\""  << ":" << getReplaySetup(hostile) << ",";
-        replay << "\"phero\""   << ":" << getReplayHeroes(hostile);
-    replay << "}";
-    string unencoded = replay.str();
-    return base64_encode((const unsigned char*) unencoded.c_str(), (int) unencoded.size());
-}
-
 // Get lineup in ingame indices
 string getReplaySetup(Army setup) {
     stringstream stringSetup;
@@ -382,29 +364,6 @@ string getReplayHeroes(Army setup) {
     return heroes.str();
 }
 
-string Instance::toJSON(bool valid) {
-    stringstream s;
-    s << "{\"validSolution\" : {";
-    if (this->hasWorldBoss) {
-        s << "\"bossdamage\"" << ":" << WORLDBOSS_HEALTH - this->lowestBossHealth << ",";
-    }
-        s << "\"target\""  << ":" << this->target.toJSON() << ",";
-        s << "\"solution\""  << ":" << this->bestSolution.toJSON() << ",";
-        s << "\"time\""  << ":" << this->calculationTime << ",";
-        s << "\"fights\"" << ":" << this->totalFightsSimulated << ",";
-        s << "\"replay\"" << ":" << "\"" << makeBattleReplay(this->bestSolution, this->target) << "\"";
-    
-    s << "}";
-    if (!valid) {
-        s << ",\"error\" : {";
-            s << "\"message\"" << ":" << "\"Fatal Internal Error: Solution not valid!!!\"" << ",";
-            s << "\"errorType\"" << ":" << "\"SANITY_CHECK_FAILED\"";
-        s << "}";
-    }
-    s << "}";
-    return s.str();
-}
-
 string Instance::toString(bool valid, bool showReplayString) {
     stringstream s;
         
@@ -421,9 +380,6 @@ string Instance::toString(bool valid, bool showReplayString) {
     s << "  " << this->totalFightsSimulated << " Fights simulated." << endl;
     s << "  Total Calculation Time: " << this->calculationTime << endl;
     s << "  Calc Version: " << VERSION << endl << endl;
-    if (!this->bestSolution.isEmpty() && showReplayString) {
-        s << "Battle Replay (Use on Ingame Tournament Page):" << endl << makeBattleReplay(this->bestSolution, this->target) << endl << endl;
-    }
     if (!valid) {
         s << "This does not beat the lineup!!!" << endl;
         s << "FATAL ERROR!!! Please comment this output in the Forums!" << endl;
@@ -451,7 +407,7 @@ vector<string> split(string target, string separator) {
 // Convert a string to lowercase where available
 string toLower(string input) {
     for (size_t i = 0; i < input.length(); i++) {
-        input[i] = tolower(input[i], locale());
+        input[i] = tolower(input[i]);
     }
     return input;
 }
