@@ -271,7 +271,7 @@ Instance makeInstanceFromString(string instanceString) {
             int questNumber = stoi(instanceString.substr(QUEST_PREFIX.length(), dashPosition-QUEST_PREFIX.length()));
             instance.setTarget(makeArmyFromStrings(quests[questNumber]));
             instance.maxCombatants = ARMY_MAX_SIZE - (stoi(instanceString.substr(dashPosition+1, 1)) - 1);
-        } catch (const exception & e) {
+        } catch (...) {
             throw QUEST_PARSE;
         }
     } else {
@@ -294,7 +294,7 @@ Army makeArmyFromStrings(vector<string> stringMonsters) {
         } else {
             try {
                 army.add(monsterMap.at(stringMonsters[i]));
-            } catch (const exception & e) {
+            } catch (...) {
                 throw MONSTER_PARSE;
             }
         }
@@ -308,7 +308,7 @@ pair<Monster, int> parseHeroString(string heroString) {
     int level;
     try {
         level = stoi(heroString.substr(heroString.find(HEROLEVEL_SEPARATOR)+1));
-    } catch (const exception & e) {
+    } catch (...) {
         throw HERO_PARSE;
     }
     

@@ -399,7 +399,7 @@ void initGameData() {
 
     for (size_t i = 0; i < monsterBaseList.size(); i++) {
         monsterReference.push_back(monsterBaseList[i]);
-        monsterMap.insert(std::pair<std::string, int8_t>(monsterBaseList[i].name, i));
+        monsterMap.insert(std::pair<std::string, int8_t>(monsterBaseList[i].name, i)); // TODO: implicit convert from size_t to int8_t
     }
 }
 
@@ -431,7 +431,7 @@ int getRealIndex(Monster & monster) {
     if (monster.rarity != NO_HERO) {
         for (i = 0; i < baseHeroes.size(); i++) {
             if (baseHeroes[i].baseName == monster.baseName) {
-                index = (int) (-i - 2);
+                index = (int) (-i - 2); // TODO: i is unsigned, -i is still positive
             }
         }
     } else {
