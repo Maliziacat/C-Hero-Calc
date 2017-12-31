@@ -39,7 +39,7 @@ string getResistantInput(string query, string help, QueryType queryType) {
 				try {
 					stoi(inputString);
 					return inputString;
-				} catch (const exception & e) {}
+				} catch (...) {}
 			}
 			if (queryType == raw) {
 				return inputString;
@@ -104,7 +104,7 @@ vector<int> takeHerolevelInput() {
 				levels.push_back(level);
 			}
 			heroFile.close();
-		} catch (const exception & e) {
+		} catch (...) {
 			cout << heroFileNotFoundErrorMessage;
 			fileInput = false;
 		}
@@ -154,7 +154,7 @@ vector<int8_t> takeLineupInput(string prompt, int &questNumber) {
 				lineup = makeMonstersFromStrings(stringLineup);
 				return lineup;
 			}
-		} catch (const exception & e) {}
+		} catch (...) {}
 	}
 }
 
